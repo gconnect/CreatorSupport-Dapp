@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import CustomButton from './CustomButton'
 import CircleCheck from '../images/circle-check.svg'
 
@@ -11,7 +11,13 @@ interface ICreator {
   currency: string
 }
 
-export default function Creator(params: ICreator) : JSX.Element{
+export default function Creator(params: ICreator): JSX.Element{
+    const [show, setShow] = useState<Boolean>(false)
+
+  const openModal = () => {
+    setShow(true)
+  }
+
   return (
    <div className="flex justify-center m-4">
     <div className="flex flex-col md:flex-row md:max-w-xl rounded-lg bg-white shadow-lg">
@@ -36,7 +42,7 @@ export default function Creator(params: ICreator) : JSX.Element{
               <p className="text-gray-600 ml-2 text-lg">{params.supporters}</p>
             </div>  
           </div>        
-          <CustomButton myStyle='bg-amber-500 mt-4' text='Support'/>
+          <CustomButton action={openModal} myStyle='bg-amber-500 mt-4' text='Support'/>
       </div>
   </div>
 </div>

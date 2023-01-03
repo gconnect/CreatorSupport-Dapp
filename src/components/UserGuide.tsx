@@ -6,7 +6,7 @@ interface ICreatorGuide {
   description: string
 }
 
-export default function CreatorGuide(params : ICreatorGuide) : JSX.Element {
+export default function UserGuide(params : ICreatorGuide) : JSX.Element {
   return (
       <div className='flex justify-center m-8'>
         <div className='mr-8 align-center'>

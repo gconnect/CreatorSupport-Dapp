@@ -1,5 +1,5 @@
 import React from 'react'
-import CreatorGuide from './CreatorGuide'
+import UserGuide from './UserGuide'
 import CircleWallet from '../images/circle-wallet.svg'
 
 export default function Supporter() {
@@ -9,17 +9,17 @@ export default function Supporter() {
       <p className='text-center px-48 py-4 text-xl'>Encourage  and support the works of creators you admire so that they can do more.  
 <br/>All you have to do is to send in your support to them. </p>
       <div className='flex justify-center'> 
-        <CreatorGuide image={CircleWallet}
+        <UserGuide image={CircleWallet}
           title='Connect Wallet'
           description='We have variety of wallet connection options.
                     Connect to your wallet of choice'/>
         
-        <CreatorGuide image={CircleWallet}
+        <UserGuide image={CircleWallet}
           title='Select a Creator'
           description='select the creator you want to support 
         from our list of creator or directly using the creator link'/>
 
-        <CreatorGuide image={CircleWallet}
+        <UserGuide image={CircleWallet}
           title='Send Your Support'
           description='select the creator you want to support 
         from our list of creator or directly using the creator link'/>
