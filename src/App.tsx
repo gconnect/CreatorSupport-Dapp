@@ -2,7 +2,7 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Modal from './Modal';
-import ConnectModal from './components/ConnectModal';
+import ConnectModal from './components/Modal/ConnectModal';
 import ActivateConnectors from './utils/ActivateConnectors';
 
 // Using web3react core

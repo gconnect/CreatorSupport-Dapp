@@ -1,16 +1,16 @@
 import React from "react";
-import UnstoppableIcon from '../images/wallet/unstoppable-icon.png'
-import MetaMaskIcon from '../images/wallet/metamask-icon.png'
-import CoinbaseWalletIcon from '../images/wallet/coinbase-icon.svg'
-import MyAlgoWallet from '../images/wallet/myalgo-icon.png'
-import WalletConnectIcon from '../images/wallet/wallet-connect-icon.png'
-import ButtonWithIcon from "./ButtonWithIcon";
+import UnstoppableIcon from '../../images/wallet/unstoppable-icon.png'
+import MetaMaskIcon from '../../images/wallet/metamask-icon.png'
+import CoinbaseWalletIcon from '../../images/wallet/coinbase-icon.svg'
+import MyAlgoWallet from '../../images/wallet/myalgo-icon.png'
+import WalletConnectIcon from '../../images/wallet/wallet-connect-icon.png'
+import ButtonWithIcon from "../ButtonWithIcon";
 import { useWeb3React } from '@web3-react/core'
-import { CoinbaseWallet, WalletConnect, Injected , uauth} from '../utils/Connectors';
+import { CoinbaseWallet, WalletConnect, Injected , uauth} from '../../utils/Connectors';
 
 
 export default function ConnectModal(): JSX.Element {
-  const { activate, deactivate, account, active, chainId } = useWeb3React();
+  const { activate } = useWeb3React();
   return (
     <div>
       <div className="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto" id="exampleModalCenter" tabIndex={-1} aria-labelledby="exampleModalCenterTitle" aria-modal="true" role="dialog">

@@ -42,7 +42,7 @@ export default function Creator(params: ICreator): JSX.Element{
               <p className="text-gray-600 ml-2 text-lg">{params.supporters}</p>
             </div>  
           </div>        
-          <CustomButton action={openModal} myStyle='bg-amber-500 mt-4' text='Support'/>
+          <CustomButton myStyle='bg-amber-500 mt-4' text='Support'/>
       </div>
   </div>
 </div>

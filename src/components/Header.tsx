@@ -1,22 +1,32 @@
-import React, {useState} from 'react'
-import ConnectModal from './ConnectModal'
+import React, { useState, useEffect } from 'react'
+import ConnectModal from './Modal/ConnectModal'
 import CustomButton from './CustomButton'
+import { useWeb3React } from '@web3-react/core'
 
 export default function Header(): JSX.Element{
   const [show, setShow] = useState<Boolean>(false)
-
+  const { deactivate, account, active, chainId } = useWeb3React();
+ 
   const openModal = () => {
     setShow(true)
   }
+
   return (
       <header>
-        <nav className='p-4 flex justify-between'>
-          <h2 className='font-bold text-2xl'>DSupport</h2>
+        <nav className='p-4 flex justify-between fixed w-full'>
+          <h2 className='font-bold lg:text-2xl sm:text-xl'>DSupport</h2>
         <div>
-          <CustomButton myStyle='bg-amber-500 text-white p-2 rounded-md' text='Connect Wallet'  action={openModal}/>
+          {active ?
+            <div>
+              <CustomButton myStyle='bg-black border-2 border-amber-500 text-amber-500' text={`Connected to ${account?.substring(0, 5)}..`} />
+              <CustomButton myStyle='bg-amber-500' text="Disconnect" action={ deactivate }/>
+            </div> :
+            <div>
+              <CustomButton myStyle='bg-amber-500' text='Connect Wallet' toggleValue='modal' targetValue='#exampleModalCenter' />
+            </div>
+            
+          }
           <ConnectModal/>
-              {/* <button className='bg-amber-500 text-white p-2 rounded-md'>Disconnect</button> */}
-              {/* <button className='bg-black border-2 border-orange-500 text-orange-500 p-2 rounded-md'>Connected to 0xdff...</button> */}
           </div>
         </nav>
       </header>

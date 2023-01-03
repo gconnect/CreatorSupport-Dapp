@@ -5,6 +5,7 @@ import CircleCreate from '../images/circle-create.svg'
 import CirclePay from '../images/circle-pay.svg'
 import CircleShare from '../images/circle-share.svg'
 import CustomButton from './CustomButton'
+import CreatorModal from './Modal/CreatorModal'
 
 export default function CreatorSection(): JSX.Element {
   const [show, setShow] = useState<Boolean>(false)
@@ -40,7 +41,8 @@ export default function CreatorSection(): JSX.Element {
         description='Share your profile to gain more supporters'
       />
       <div className='flex justify-center m-8'>
-        <CustomButton action={openModal} myStyle='bg-amber-500 p-4' text='Creator Account Setup' />
+        <CustomButton myStyle='bg-amber-500 p-4' text='Creator Account Setup' toggleValue='modal' targetValue='#creatorModal' />
+        <CreatorModal/>
       </div>
     </div>
   )
