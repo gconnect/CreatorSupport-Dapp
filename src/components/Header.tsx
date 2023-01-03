@@ -6,14 +6,18 @@ import { useWeb3React } from '@web3-react/core'
 export default function Header(): JSX.Element{
   const [show, setShow] = useState<Boolean>(false)
   const { deactivate, account, active, chainId } = useWeb3React();
- 
-  const openModal = () => {
-    setShow(true)
-  }
+
+  // useEffect(() => {
+  //   if (active) {
+  //     setShow(true)
+  //   }
+  // }, [account])
+  
+
 
   return (
       <header>
-        <nav className='p-4 flex justify-between fixed w-full'>
+        <nav className='p-4 flex justify-between'>
           <h2 className='font-bold lg:text-2xl sm:text-xl'>DSupport</h2>
         <div>
           {active ?
