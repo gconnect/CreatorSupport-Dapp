@@ -1,5 +1,6 @@
 import React from 'react'
 import CreatorSection from './CreatorSection'
+import Dashboard from './Dashboard/Dashboard'
 import FeaturedCreators from './FeaturedCreators'
 import Hero from './Hero'
 import PartnerSection from './PartnerSection'
@@ -13,6 +14,7 @@ export default function Content() : JSX.Element {
       <FeaturedCreators />
       <Supporter />
       <PartnerSection/>
+      {/* <Dashboard/> */}
     </div>
   )
 }
