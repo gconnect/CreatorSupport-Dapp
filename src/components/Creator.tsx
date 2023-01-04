@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import CustomButton from './CustomButton'
 import CircleCheck from '../images/circle-check.svg'
+import SupporterModal from './Modal/SupporterModal'
 
 interface ICreator {
   image: string,
@@ -42,7 +43,8 @@ export default function Creator(params: ICreator): JSX.Element{
               <p className="text-gray-600 ml-2 text-lg">{params.supporters}</p>
             </div>  
           </div>        
-          <CustomButton myStyle='bg-amber-500 mt-4' text='Support'/>
+          <CustomButton myStyle='bg-amber-500 mt-4' text='Support' toggleValue='modal' targetValue='#supporterModal' />
+          <SupporterModal/>
       </div>
   </div>
 </div>

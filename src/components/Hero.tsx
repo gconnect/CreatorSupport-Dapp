@@ -2,10 +2,10 @@ import React from 'react'
 
 export default function Hero() : JSX.Element{
   return (
-    <div className='pt-36 px-28 text-center'>
-      <h1 className='lg:text-8xl md:text-6xl sm:text-4xl xm:text-3xl'>Give your audience an 
+    <div className='pt-36 lg:px-28 md:px-24 sm:px-24 text-center'>
+      <h1 className='lg:text-8xl md:text-6xl sm:4xl animate-text bg-gradient-to-r from-teal-500 via-purple-500 to-orange-500 bg-clip-text text-transparent '>Give your audience an 
         easy way to say thanks</h1>
-      <h3 className='lg:text-3xl md:text-2xl sm:text-xl pt-8 pb-24'>Start receiving support from your fans with the speed of light anywhere you are in the world. 
+      <h3 className='lg:text-3xl md:text-2xl sm:text-2xl pt-8 pb-24'>Start receiving support from your fans with the speed of light anywhere you are in the world. 
 With the power of blockchain technologies</h3>
     </div>
   )

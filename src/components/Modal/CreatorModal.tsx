@@ -1,17 +1,41 @@
-import React from "react";
-import UnstoppableIcon from '../../images/wallet/unstoppable-icon.png'
-import MetaMaskIcon from '../../images/wallet/metamask-icon.png'
-import CoinbaseWalletIcon from '../../images/wallet/coinbase-icon.svg'
-import MyAlgoWallet from '../../images/wallet/myalgo-icon.png'
-import WalletConnectIcon from '../../images/wallet/wallet-connect-icon.png'
-import ButtonWithIcon from "../ButtonWithIcon";
+import React, { ChangeEvent, useState } from "react";
 import { useWeb3React } from '@web3-react/core'
-import { CoinbaseWallet, WalletConnect, Injected , uauth} from '../../utils/Connectors';
 import CustomButton from "../CustomButton";
+import FormInput from "../FormInput";
 
 
 export default function CreatorModal(): JSX.Element {
   const { activate } = useWeb3React();
+  const [username, setUsername] = useState<string>("")
+  const [bio, setBio] = useState<string>("")
+  const [network, setNetwork] = useState<string>("")
+  const [walletAddress, setWalletAddress] = useState<string>("")
+  const [profilePix, setProfilePix] = useState<string | File | number | readonly string[] | undefined>(undefined)
+
+  const userHandler = (e: React.FormEvent<HTMLInputElement>) => {
+    setUsername(e.currentTarget.value)
+  }
+
+  const bioHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    setBio(event.currentTarget.value)
+    console.log(event.currentTarget.value)
+  }
+
+  const networkHandler = (e: ChangeEvent<HTMLSelectElement>) => {
+    setNetwork(e.target.value)
+
+  }
+
+  const walletHandler = (e: React.FormEvent<HTMLInputElement>) => {
+    setWalletAddress(e.currentTarget.value)
+  }
+
+  const profileHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files != null) {
+      setProfilePix(e.target.files[0]); 
+      console.log(e.target.files[0])
+    }
+  }
 
   return (
     <div>
@@ -28,40 +52,60 @@ export default function CreatorModal(): JSX.Element {
             </div>
             <div className="modal-body relative p-4">
               <div className="flex justify-center flex flex-col">
-                <div className="flex justify-center">
-                  <div className="mb-3 xl:w-96">
-                    <label htmlFor="exampleFormControlInput1" className="form-label inline-block mb-2 text-gray-700"
-                      >Example label</label
-                    >
-                    <input
-                      type="text"
-                      className="
-                        form-control
-                        block
-                        w-full
-                        px-3
-                        py-1.5
-                        text-base
-                        font-normal
-                        text-gray-700
-                        bg-white bg-clip-padding
-                        border border-solid border-gray-300
-                        rounded
-                        transition
-                        ease-in-out
-                        m-0
-                        focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none
-                      "
-                      id="exampleFormControlInput1"
-                      placeholder="Example label"
-                    />
-                  </div>
-                </div>
-                <div className="mb-3 w-96">
-                  <label htmlFor="formFile" className="form-label inline-block mb-2 text-gray-700">Default file input example</label>
+                <FormInput placeholder="Username" value={username} onChange={userHandler}  type="text"/>
+                <textarea
+                  className="
+                    form-control
+                    text-black
+                    block
+                    w-full
+                    px-3
+                    py-1.5
+                    text-base
+                    font-normal
+                    text-gray-700
+                    bg-white bg-clip-padding
+                    border border-solid border-gray-300
+                    rounded
+                    transition
+                    ease-in-out
+                    m-0
+                    focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none
+                  "
+                  id="exampleFormControlTextarea1"
+                  rows={3}
+                  placeholder="Tell us a little about you. (Not more than 100 words)"
+                  value={bio}
+                  onChange={bioHandler}
+                >                  
+                </textarea>
+                <label className="form-label inline-block mb-2 text-gray-700 my-2">Where would you like to receive your payment?</label>
+               <select className="form-select appearance-none
+                      block
+                      w-full
+                      px-3
+                      py-1.5
+                      my-2
+                      text-base
+                      font-normal
+                      text-gray-700
+                      bg-white bg-clip-padding bg-no-repeat
+                      border border-solid border-gray-300
+                      rounded
+                      transition
+                      ease-in-out
+                      focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" aria-label="Default select example" onChange={networkHandler}>
+                        <option selected>Select Network</option>
+                        <option value="1">Polygon</option>
+                        <option disabled value="2">Celo</option>
+                        <option disabled value="3">Algorand</option>
+                </select>
+                <FormInput placeholder="Enter your wallet address" value={walletAddress} onChange={walletHandler} type="text" />
+                  <label htmlFor="formFile" className="form-label inline-block mb-2 text-gray-700">Upload your profile picture</label>
                   <input className="form-control
                   block
                   w-full
+                  my-2
                   px-3
                   py-1.5
                   text-base
@@ -73,32 +117,7 @@ export default function CreatorModal(): JSX.Element {
                   transition
                   ease-in-out
                   m-0
-                  focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" type="file" id="formFile"/>
-                </div>
-                <div className="flex justify-center">
-                  <div className="mb-3 xl:w-96">
-                    <select className="form-select appearance-none
-                      block
-                      w-full
-                      px-3
-                      py-1.5
-                      text-base
-                      font-normal
-                      text-gray-700
-                      bg-white bg-clip-padding bg-no-repeat
-                      border border-solid border-gray-300
-                      rounded
-                      transition
-                      ease-in-out
-                      m-0
-                      focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" aria-label="Default select example">
-                        <option selected>Open this select menu</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                    </select>
-                  </div>
-                </div>
+                  focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" type="file" id="formFile" onChange={profileHandler} />
               </div>
               <CustomButton text="Create Account" myStyle="bg-amber-500 w-full" action={() =>{console.log("submit")}}/>
             </div>
