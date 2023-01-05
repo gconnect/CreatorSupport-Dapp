@@ -10,7 +10,7 @@ export default function UserGuide(params : ICreatorGuide) : JSX.Element {
   return (
       <div className='flex justify-center m-8'>
         <div className='mr-8 align-center'>
-          <img className='align-center lg:visible md:invisible sm:invisible' src={params.image} width="70px" height="70px" alt='create-wallet' />
+          <img className='align-center lg:visible  sm:invisible' src={params.image} width="70px" height="70px" alt='create-wallet' />
         </div>
         <div>
           <h3 className='font-bold text-2xl'>{params.title}</h3>

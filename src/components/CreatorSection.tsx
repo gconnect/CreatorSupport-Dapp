@@ -17,7 +17,8 @@ export default function CreatorSection(): JSX.Element {
 
     <div className=''>
       <h3 className='text-center text-3xl'>Are you a Creator?</h3>
-      <UserGuide
+      <div className='grid lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1'>
+        <UserGuide
         image={CircleWallet}
         title="Connect Wallet"
         description='We have variety of wallet connection options.
@@ -40,6 +41,7 @@ export default function CreatorSection(): JSX.Element {
         title="Share your Profile"
         description='Share your profile to gain more supporters'
       />
+      </div>
       <div className='flex justify-center m-8'>
         <CustomButton myStyle='bg-amber-500 p-4' text='Creator Account Setup' toggleValue='modal' targetValue='#creatorModal' />
         <CreatorModal/>
