@@ -19,7 +19,7 @@ Pinata IPFS storage was used to store the photos/profile pictures of the creator
 - Coinbase Wallet
 
 # License
-Distributed under the MIT License. See for more information. [LICENSE]()
+Distributed under the MIT License. See for more information. [LICENSE](https://github.com/gconnect/CreatorSupport-Dapp/blob/master/LICENSE)
 
 # Warning
 This project is not audited and should not be used in a production environment.
