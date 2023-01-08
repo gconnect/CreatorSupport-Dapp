@@ -1,4 +1,5 @@
 import React from 'react'
+import ConnectModal from './Modal/ConnectModal';
 
 interface IButton {
   myStyle: string;
@@ -10,8 +11,11 @@ interface IButton {
 }
 export default function CustomButton(params: IButton) : JSX.Element {
   return (
-    <button className={`${params.myStyle} text-white p-2 mr-2 rounded-md align-center`} data-bs-toggle={params.toggleValue} data-bs-target={params.targetValue} onClick={params.action}>
+    <div>
+      <button className={`${params.myStyle} text-white p-2 mr-2 rounded-md align-center`} data-bs-toggle={params.toggleValue} data-bs-target={params.targetValue} onClick={params.action}>
       {params.text}
-    </button>
+      </button>
+    </div>
+   
   )
 }

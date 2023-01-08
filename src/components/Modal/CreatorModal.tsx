@@ -2,10 +2,12 @@ import React, { ChangeEvent, useState } from "react";
 import { useWeb3React } from '@web3-react/core'
 import CustomButton from "../CustomButton";
 import FormInput from "../FormInput";
-
+import { createCreator } from "../../utils/interact";
+import ConnectModal from "./ConnectModal";
+import { pinFileToPinata } from "../../pinata/PinFile";
 
 export default function CreatorModal(): JSX.Element {
-  const { activate } = useWeb3React();
+  const { activate, account, active } = useWeb3React();
   const [username, setUsername] = useState<string>("")
   const [bio, setBio] = useState<string>("")
   const [network, setNetwork] = useState<string>("")
@@ -34,6 +36,16 @@ export default function CreatorModal(): JSX.Element {
     if (e.target.files != null) {
       setProfilePix(e.target.files[0]); 
       console.log(e.target.files[0])
+    }
+  }
+
+
+  const createAccount = async () => {
+    if (active) {
+      const pinataHash = await pinFileToPinata(profilePix) 
+       await createCreator(account, username, pinataHash, bio, network)
+    } else {
+      return <ConnectModal/>
     }
   }
 
@@ -96,11 +108,11 @@ export default function CreatorModal(): JSX.Element {
                       ease-in-out
                       focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" aria-label="Default select example" onChange={networkHandler}>
                         <option selected>Select Network</option>
-                        <option value="1">Polygon</option>
+                        <option value="80001">Polygon</option>
                         <option disabled value="2">Celo</option>
                         <option disabled value="3">Algorand</option>
                 </select>
-                <FormInput placeholder="Enter your wallet address" value={walletAddress} onChange={walletHandler} type="text" />
+                {/* <FormInput placeholder="Enter your wallet address" value={walletAddress} onChange={walletHandler} type="text" /> */}
                   <label htmlFor="formFile" className="form-label inline-block mb-2 text-gray-700">Upload your profile picture</label>
                   <input className="form-control
                   block
@@ -119,7 +131,7 @@ export default function CreatorModal(): JSX.Element {
                   m-0
                   focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" type="file" id="formFile" onChange={profileHandler} />
               </div>
-              <CustomButton text="Create Account" myStyle="bg-amber-500 w-full" action={() =>{console.log("submit")}}/>
+              <CustomButton text="Create Account" myStyle="bg-amber-500 w-full" action={() => { createAccount() }} />
             </div>
           </div>
         </div>
