@@ -21,6 +21,25 @@ export default function ConnectModal(): JSX.Element {
       console.log(err)
     }
   }
+
+   const persistUnstoppable = async () => {
+    try {
+      await activate(uauth)
+      localStorage.setItem("isunstoppable", "true")
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+    const persistCoinbaseWallet = async () => {
+    try {
+      await activate(CoinbaseWallet)
+      localStorage.setItem("isCoinbase", "true")
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   return (
     <div>
       <div className="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto" id="exampleModalCenter" tabIndex={-1} aria-labelledby="exampleModalCenterTitle" aria-modal="true" role="dialog">
@@ -36,10 +55,10 @@ export default function ConnectModal(): JSX.Element {
             </div>
             <div className="modal-body relative p-4">
               <div className="flex justify-center m-2">
-                <ButtonWithIcon text="Unstoppable" image={UnstoppableIcon} myStyle="text-2xl border-2 border-blue-500 text-blue-500" action={() => activate(uauth)} />
+                <ButtonWithIcon text="Unstoppable" image={UnstoppableIcon} myStyle="text-2xl border-2 border-blue-500 text-blue-500" action={() => persistUnstoppable()} />
               </div>
               <div className="flex justify-center m-2">
-                <ButtonWithIcon text="Coinbase Wallet" image={CoinbaseWalletIcon} myStyle="text-2xl border-2 border-blue-500 text-blue-500" action={() => activate(CoinbaseWallet)} />
+                <ButtonWithIcon text="Coinbase Wallet" image={CoinbaseWalletIcon} myStyle="text-2xl border-2 border-blue-500 text-blue-500" action={() => persistCoinbaseWallet()} />
               </div>
               <div className="flex justify-center m-2">
                 <ButtonWithIcon text="Metamask" image={MetaMaskIcon} myStyle="text-2xl border-2 border-blue-500 text-blue-500" action={() => connect()} />

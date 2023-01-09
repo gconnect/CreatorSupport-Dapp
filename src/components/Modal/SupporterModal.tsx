@@ -29,7 +29,7 @@ export default function SupporterModal(): JSX.Element {
     setWalletAddress(e.currentTarget.value)
   }
   const getCreatorList = async () =>  await getCreators()
-    const { data } = useQuery({
+  const { data } = useQuery({
       queryKey: ['Creators'],
       queryFn: () =>
         getCreatorList()
@@ -96,7 +96,9 @@ export default function SupporterModal(): JSX.Element {
                 >                  
                 </textarea>
                 <FormInput placeholder="Wallet address" value={creator === undefined ? undefined :creator.walletAddress} onChange={walletHandler} type="text" disabled={true} />   
-                {/* <p className="text-black">{`Resolve to ${resolveDomain}`}</p> */}
+                
+                <p>Register your domain</p>  : <p className="text-black">{`Resolve to ${resolveDomain}`}</p>
+                
               </div>
               <CustomButton text="Support" myStyle="bg-amber-500 w-full" action={() =>{sendSupport()}}/>
             </div>

@@ -12,7 +12,7 @@ export const CoinbaseWallet = new WalletLinkConnector({
 
 // Login with walletconnect
 export const WalletConnect = new WalletConnectConnector({
- infuraId:`https://polygon-mumbai.infura.io/v3/${process.env.REACT_APP_INFURA_API_KEY}`,
+ infuraId:`https://mainnet.infura.io/v3/e0c1df0b8f7441beb006aa1a3485a385`,
  bridge: "https://bridge.walletconnect.org",
  qrcode: true,
 });

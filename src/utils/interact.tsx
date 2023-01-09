@@ -2,9 +2,10 @@ import { createAlchemyWeb3 } from "@alch/alchemy-web3";
 import { BigNumber } from "ethers";
 import { AbiItem } from 'web3-utils'
 import contractABI from "../Donation.json"
+
 const alchemyUrl = `https://polygon-mumbai.g.alchemy.com/v2/${process.env.REACT_APP_ALCHEMY_MUMBAI_API_KEY}`;
 const web3 = createAlchemyWeb3(alchemyUrl);
-const contractAddress = "0x4f5a57e61f011e7dEc0a999d0AAe5B58033251e3";
+const contractAddress = "0xf327B1bECe58b394D68FCCB97214D6a23B5C4700";
 
  export const donationContract = new web3.eth.Contract(
   contractABI.abi as AbiItem[],
@@ -64,6 +65,7 @@ export const getCreators = async () => {
 
 export const getCreator = async (index: number) => {
   const creatorObj = await donationContract.methods.getCreatorObj(index).call() 
+  // const creatorObj = await donationContract.methods.getCreatorInfo(index).call() 
   console.log(creatorObj)
   return creatorObj;
 }
@@ -74,8 +76,8 @@ export const getCreatorSupporterCount = async () => {
   return supportersCount
 }
 
-export const creatorWithdrawTip = async(address: string | null | undefined, index: number, amount: number, receipient: string) => {
-  const txHash = await donationContract.methods.creatorWithdrawTip(index, amount, receipient).send({
+export const creatorWithdrawTip = async(address: string | null | undefined, index: number, amount: BigNumber) => {
+  const txHash = await donationContract.methods.creatorWithdrawTip(index, amount).send({
      from: address,
     gasLimit:'2100000'
   })
@@ -87,33 +89,6 @@ export const getCreatorBal = async (index : number) => {
   console.log(earnings)
   return earnings
 }
-
-/*
-   * A function to check if a user wallet is connected.
-   */
-  // export const checkIfWalletIsConnected = async () => {
-  //   try {
-  //     const { ethereum } = window;
-
-  //     /*
-  //      * Check if we're authorized to access the user's wallet
-  //      */
-  //     const accounts = await ethereum.request({ method: "eth_accounts" });
-
-  //     if (accounts.length !== 0) {
-  //       const account = accounts[0];
-  //     const obj = {
-  //       currentAccount: account,
-  //       status: "🦄 Wallet is Connected!",
-  //     };
-  //       return obj;
-  //     } else {
-  //       return "To create a feed, Ensure your wallet Connected!"
-  //     }
-  //   } catch (err) {
-  //     return err;
-  //   }
-  // };
 
 //   export const getCurrentWalletConnected = async () => {
 //   if (window.ethereum) {

@@ -1,12 +1,17 @@
 import React, { ChangeEvent, useState } from 'react'
 import CustomButton from '../CustomButton'
 import FormInput from '../FormInput'
+import { useQuery } from '@tanstack/react-query' 
+import { getCreator } from '../../utils/interact'
+import { sendTip } from '../../utils/interact'
+import { ethers } from 'ethers'
+import { useWeb3React } from '@web3-react/core'
 
 export default function SupportersForm() {
   const [amount, setAmount] = useState<string>("")
   const [walletAddress, setWalletAddress] = useState<string>("")
   const [comment, setComment] = useState<string>("")
-
+  const { account } = useWeb3React()
 
   const amountHandler = (e: React.FormEvent<HTMLInputElement>) => {
     setAmount(e.currentTarget.value)
@@ -20,6 +25,16 @@ export default function SupportersForm() {
   const walletHandler = (e: React.FormEvent<HTMLInputElement>) => {
     setWalletAddress(e.currentTarget.value)
   }
+
+    const { data } = useQuery({
+    queryKey: ['creator'],
+    queryFn: async () => await getCreator(0)
+    })
+  
+    const sendSupport = async () => {
+    await sendTip(account, comment, 0, ethers.utils.parseUnits(amount, "ether"))  
+  }
+  
   return (
     <div>
       <div className="flex flex-col">
@@ -50,9 +65,9 @@ export default function SupportersForm() {
                   onChange={commentHandler}
                 >                  
                 </textarea>
-                <FormInput placeholder="Wallet address" value={walletAddress} onChange={walletHandler} type="text" />                  
+                <FormInput placeholder="Wallet address" value={data === undefined ? "" : data.walletAddress} onChange={walletHandler} type="text" disabled={true} />                  
               </div>
-              <CustomButton text="Support" myStyle="bg-amber-500 w-full" action={() =>{console.log("submit")}}/>
+              <CustomButton text="Support" myStyle="bg-amber-500 w-full" toggleValue={account === undefined ? 'modal' : ""} targetValue= {account === undefined ? "#exampleModalCenter" : ""} action={() => { sendSupport() }}/>
     </div>
   )
 }

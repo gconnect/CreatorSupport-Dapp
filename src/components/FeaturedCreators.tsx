@@ -2,16 +2,12 @@ import React from 'react'
 import { useQuery } from '@tanstack/react-query'
 import Creator from './Creator'
 import { getCreators } from '../utils/interact'
-import { BigNumber, ethers } from "ethers";
 
 export default function FeaturedCreators() {  
-    
-  const getCreatorList = async () =>  await getCreators()
-  
+      
   const { isLoading, error, data } = useQuery({
       queryKey: ['repoData'],
-      queryFn: () =>
-        getCreatorList()
+      queryFn: async () => await getCreators()
     })
     if (isLoading) {
       <div> loading...</div>

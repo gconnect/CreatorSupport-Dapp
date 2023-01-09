@@ -9,22 +9,25 @@ import Content from './components/Content';
 import Dashboard from './components/Dashboard/Dashboard';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { useWeb3React } from '@web3-react/core';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+
 const getLibrary = (provider: ethers.providers.ExternalProvider) => {
   return new ethers.providers.Web3Provider(provider)
 }
 
 function App() {
-  const { account } = useWeb3React()
-  // const creatorAccount: string | undefined = account
+    const queryClient = new QueryClient()
   
   return (
     <Web3ReactProvider getLibrary={getLibrary}>
-      <Layout>
-        <Routes>
-          <Route path="/" element={<Content />} />
-          <Route path="dashboard" element={<Dashboard />} />
-      </Routes>
-      </Layout>
+      <QueryClientProvider client={queryClient}>
+        <Layout>
+          <Routes>
+            <Route path="/" element={<Content />} />
+            <Route path="dashboard" element={<Dashboard />} />
+        </Routes>
+        </Layout>
+      </QueryClientProvider>
     </Web3ReactProvider>
   );
 }

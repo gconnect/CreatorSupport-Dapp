@@ -158,9 +158,9 @@ contract Donation {
     }
 
     // function to get creator info
-    function getCreatorInfo(uint index) public view returns (string memory,  string memory, address, string memory, uint, string memory){
+    function getCreatorInfo(uint index) public view returns (string memory,  string memory, address, string memory, uint, string memory, uint){
         CreatorInfo storage creatorDetail  = creatorList[index];
-        return (creatorDetail.username, creatorDetail.profilePix, creatorDetail.walletAddress, creatorDetail.userbio, creatorDetail.donationsReceived, creatorDetail.networkOption);
+        return (creatorDetail.username, creatorDetail.profilePix, creatorDetail.walletAddress, creatorDetail.userbio, creatorDetail.donationsReceived, creatorDetail.networkOption,creatorDetail.supporters);
     }
 
     // function to get creator balance
@@ -171,7 +171,7 @@ contract Donation {
     }
 
     // Creator withdraw function. This function can be called by the creator
-    function creatorWithdrawTip(uint index, uint amount, address payable receipient) public{
+    function creatorWithdrawTip(uint index, uint amount) public{
         CreatorInfo storage creatorDetail  =  creatorList[index];
         uint creatorBal = creatorDetail.donationsReceived;    
         address payable creatorAddress = creatorDetail.walletAddress;
@@ -184,7 +184,7 @@ contract Donation {
 
         // // send input ether amount to creator
         // Note that "receipient" is declared as payable
-        (bool success, ) = receipient.call{value: amount}("");
+        (bool success, ) = creatorAddress.call{value: amount}("");
         require(success, "Failed to send Ether");  
     }
 

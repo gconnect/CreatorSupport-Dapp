@@ -3,7 +3,7 @@ import { useWeb3React } from '@web3-react/core'
 import CustomButton from "../CustomButton";
 import FormInput from "../FormInput";
 import { creatorWithdrawTip, sendTip } from "../../utils/interact";
-
+import { ethers } from "ethers";
 
 export default function WithdrawModal(): JSX.Element {
   const {account, activate } = useWeb3React();
@@ -16,16 +16,11 @@ export default function WithdrawModal(): JSX.Element {
     setAmount(e.currentTarget.value)
   }
 
-  const commentHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    setComment(event.currentTarget.value)
-    console.log(event.currentTarget.value)
-  }
-
   const walletHandler = (e: React.FormEvent<HTMLInputElement>) => {
     setWalletAddress(e.currentTarget.value)
   }
   const withdrawTip = async () => {
-    await creatorWithdrawTip(account, 0, +amount, walletAddress)
+    await creatorWithdrawTip(account, 0, ethers.utils.parseUnits(amount, "ether"))
   }
 
   return (
@@ -44,7 +39,6 @@ export default function WithdrawModal(): JSX.Element {
             <div className="modal-body relative p-4">
               <div className="flex justify-center flex flex-col">
                 <FormInput placeholder="Amount" value={amount} onChange={amountHandler} type="number" />
-                <FormInput placeholder="Wallet address" value={walletAddress} onChange={walletHandler} type="text" />                  
               </div>
               <CustomButton text="Withdraw" myStyle="bg-amber-500 w-full" action={() =>{withdrawTip()}}/>
             </div>

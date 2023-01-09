@@ -35,7 +35,7 @@ export async function resolveDomainUsingAPI(domain : string){
       }
     })
     console.log(response.data.meta.domain)
-    return response.data.meta.domain
+    return response.data.meta.owner
   }catch(err){
     console.log(err)
   }

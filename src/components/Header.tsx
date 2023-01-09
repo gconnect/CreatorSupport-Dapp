@@ -8,19 +8,12 @@ import { Injected } from '../utils/Connectors'
 export default function Header(): JSX.Element{
   const { deactivate, account, active, activate } = useWeb3React();
 
-  const connect = async () => {
-    try {
-      await activate(Injected)
-      localStorage.setItem("isWalletConnected", "true")
-    } catch (err) {
-      console.log(err)
-    }
-  }
-
   const disconnect = async () => {
     try {
       deactivate()
       localStorage.setItem("isWalletConnected", "false")
+      localStorage.setItem("isunstoppable", "false")
+      localStorage.setItem("isCoinbase", "false")
     } catch (err) {
       console.log(err)
     }
@@ -28,7 +21,9 @@ export default function Header(): JSX.Element{
 
   useEffect(() => {
     const connectWalletOnPageLoad = async () => {
-      if (localStorage.getItem("isWalletConnected") === 'true') {
+      if (localStorage.getItem("isWalletConnected") ||
+        localStorage.getItem("isunstoppable") ||
+        localStorage.getItem("isCoinbase") === 'true') {
         try {
           await activate(Injected)
           localStorage.setItem("isWalletConnected", "true")
