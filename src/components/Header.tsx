@@ -3,23 +3,42 @@ import { Link } from 'react-router-dom'
 import ConnectModal from './Modal/ConnectModal'
 import CustomButton from './CustomButton'
 import { useWeb3React } from '@web3-react/core'
-// import { getCurrentWalletConnected } from '../utils/interact'
-import { CreatorList } from '../pinata/CreatorsList'
-import { getAllCreators, getCreator, getCreatorBal, getCreators, getCreatorSupporterCount } from '../utils/interact'
+import { Injected } from '../utils/Connectors'
 
 export default function Header(): JSX.Element{
-  const [show, setShow] = useState<Boolean>(false)
-  const { deactivate, account, active, chainId } = useWeb3React();
+  const { deactivate, account, active, activate } = useWeb3React();
 
-  // useEffect(() => {
-  //   // const currentAccount = async () => {
-  //   //   let { address, status } = await getCurrentWalletConnected()
-  //   //   address = account
-  //   //   console.log(address)
-  //   //  }
-  //   //  currentAccount()
-  // }, [])
-  
+  const connect = async () => {
+    try {
+      await activate(Injected)
+      localStorage.setItem("isWalletConnected", "true")
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  const disconnect = async () => {
+    try {
+      deactivate()
+      localStorage.setItem("isWalletConnected", "false")
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  useEffect(() => {
+    const connectWalletOnPageLoad = async () => {
+      if (localStorage.getItem("isWalletConnected") === 'true') {
+        try {
+          await activate(Injected)
+          localStorage.setItem("isWalletConnected", "true")
+        } catch (err) {
+          console.log(err)
+        }
+      }
+    }
+    connectWalletOnPageLoad()
+  }, [])
   console.log(account)
 
   return (
@@ -30,7 +49,7 @@ export default function Header(): JSX.Element{
           {active ?
             <div className='flex'>
               <CustomButton myStyle='bg-black border-2 border-amber-500 text-amber-500' text={`Connected to ${account?.substring(0, 5)}..`} />
-              <CustomButton myStyle='bg-amber-500' text="Disconnect" action={deactivate} />
+              <CustomButton myStyle='bg-amber-500' text="Disconnect" action={disconnect} />
               <CustomButton myStyle='bg-amber-500' text='Dashboard' action={() => window.open('dashboard')} />
             </div> :
             <div>

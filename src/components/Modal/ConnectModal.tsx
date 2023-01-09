@@ -11,6 +11,16 @@ import { CoinbaseWallet, WalletConnect, Injected , uauth} from '../../utils/Conn
 
 export default function ConnectModal(): JSX.Element {
   const { activate } = useWeb3React();
+
+
+  const connect = async () => {
+    try {
+      await activate(Injected)
+      localStorage.setItem("isWalletConnected", "true")
+    } catch (err) {
+      console.log(err)
+    }
+  }
   return (
     <div>
       <div className="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto" id="exampleModalCenter" tabIndex={-1} aria-labelledby="exampleModalCenterTitle" aria-modal="true" role="dialog">
@@ -32,7 +42,7 @@ export default function ConnectModal(): JSX.Element {
                 <ButtonWithIcon text="Coinbase Wallet" image={CoinbaseWalletIcon} myStyle="text-2xl border-2 border-blue-500 text-blue-500" action={() => activate(CoinbaseWallet)} />
               </div>
               <div className="flex justify-center m-2">
-                <ButtonWithIcon text="Metamask" image={MetaMaskIcon} myStyle="text-2xl border-2 border-blue-500 text-blue-500" action={() => activate(Injected)} />
+                <ButtonWithIcon text="Metamask" image={MetaMaskIcon} myStyle="text-2xl border-2 border-blue-500 text-blue-500" action={() => connect()} />
               </div>
               <div className="flex justify-center m-2">
                 <ButtonWithIcon text="myAlgo Wallet" image={MyAlgoWallet} myStyle="text-2xl border-2 border-blue-500 text-blue-500" />
