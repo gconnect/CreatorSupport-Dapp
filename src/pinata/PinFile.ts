@@ -26,7 +26,7 @@ export const pinFileToPinata = async (selectedFile : string | File | number | re
         }
       });
       console.log(res.data.IpfsHash);
-      return res.data
+      return res.data.IpfsHash
     } catch (error) {
       console.log(error);
     }

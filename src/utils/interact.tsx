@@ -1,9 +1,10 @@
 import { createAlchemyWeb3 } from "@alch/alchemy-web3";
+import { BigNumber } from "ethers";
 import { AbiItem } from 'web3-utils'
 import contractABI from "../Donation.json"
 const alchemyUrl = `https://polygon-mumbai.g.alchemy.com/v2/${process.env.REACT_APP_ALCHEMY_MUMBAI_API_KEY}`;
 const web3 = createAlchemyWeb3(alchemyUrl);
-const contractAddress = "0xe2F52E6Bf27A8bDCF276767536A2BF450294723c";
+const contractAddress = "0x4f5a57e61f011e7dEc0a999d0AAe5B58033251e3";
 
  export const donationContract = new web3.eth.Contract(
   contractABI.abi as AbiItem[],
@@ -24,7 +25,7 @@ export const createCreator = async (address: string | null | undefined, username
   console.log(txHash)
 }
 
-export const sendTip = async (address: string | null | undefined, message: string, index : number, amount: number) => {
+export const sendTip = async (address: string | null | undefined, message: string, index : number, amount: BigNumber) => {
   const txHash = await donationContract.methods.sendTip(message, index).send({
     from: address,
     value: amount,
@@ -44,14 +45,27 @@ export const getAllCreators = async () => {
   return creators;
 }
 
-export const getCreator = async () => {
-  let creatorIndex = {}
-  const creatorCount = await donationContract.methods.getAllCreators().call()
-  for (let i = 0; i <= creatorCount.length; i++){
-    creatorIndex = await donationContract.methods.getCreatorInfo(i).call()
-  }
-  console.log(creatorIndex)
-  return creatorIndex;
+// Use this
+export const getCreators = async () => {
+  const creatorCount = await donationContract.methods.getCreatorList().call()
+  // console.log(creatorCount)
+  return creatorCount;
+
+  // Working with event
+  // await donationContract.events.CreatorEvent({}, (error: Error, data: any) => {
+  //   if (error) {
+  //     console.log(error)
+  //   } else {
+  //    return data.returnValues[1]
+  //   }
+  // }) 
+}
+
+
+export const getCreator = async (index: number) => {
+  const creatorObj = await donationContract.methods.getCreatorObj(index).call() 
+  console.log(creatorObj)
+  return creatorObj;
 }
 
 export const getCreatorSupporterCount = async () => {

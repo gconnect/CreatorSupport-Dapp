@@ -6,13 +6,13 @@ import CirclePay from '../images/circle-pay.svg'
 import CircleShare from '../images/circle-share.svg'
 import CustomButton from './CustomButton'
 import CreatorModal from './Modal/CreatorModal'
+import { id } from 'ethers/lib/utils'
+import ConnectModal from './Modal/ConnectModal'
+import SupporterModal from './Modal/SupporterModal'
+import { useWeb3React } from '@web3-react/core'
 
 export default function CreatorSection(): JSX.Element {
-  const [show, setShow] = useState<Boolean>(false)
-
-  const openModal = () => {
-    setShow(true)
-  }
+  const { account } = useWeb3React()
   return (
 
     <div className=''>
@@ -43,7 +43,12 @@ export default function CreatorSection(): JSX.Element {
       />
       </div>
       <div className='flex justify-center m-8'>
-        <CustomButton myStyle='bg-amber-500 p-4' text='Creator Account Setup' toggleValue='modal' targetValue='#creatorModal' />
+        <CustomButton
+          myStyle='bg-amber-500 p-4'
+          text='Creator Account Setup'
+          toggleValue='modal'
+          targetValue={account === undefined ? "#exampleModalCenter" : '#creatorModal'} />
+        <CreatorModal />
         <CreatorModal/>
       </div>
     </div>

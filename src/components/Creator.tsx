@@ -2,7 +2,9 @@ import React, { useState } from 'react'
 import CustomButton from './CustomButton'
 import CircleCheck from '../images/circle-check.svg'
 import SupporterModal from './Modal/SupporterModal'
-
+import { useWeb3React } from '@web3-react/core'
+import ConnectModal from './Modal/ConnectModal'
+import { BigNumber } from 'ethers'
 interface ICreator {
   image: string,
   name: string,
@@ -10,14 +12,12 @@ interface ICreator {
   earnings: number,
   supporters: number
   currency: string
+  creatorAddress: string
 }
 
 export default function Creator(params: ICreator): JSX.Element{
-    const [show, setShow] = useState<Boolean>(false)
+    const { account } = useWeb3React()
 
-  const openModal = () => {
-    setShow(true)
-  }
 
   return (
    <div className="flex justify-center m-4">
@@ -32,7 +32,7 @@ export default function Creator(params: ICreator): JSX.Element{
             <img src={CircleCheck} alt="icon" width={24} />
             <div>
               <p className="text-gray-600 text-xs">Donation received</p>
-              <p className="text-gray-600 ml-2 text-lg">{params.earnings}<span>{params.currency}</span></p>
+              <p className="text-gray-600 ml-2 text-lg">{ params.earnings}<span> {params.currency}</span></p>
             </div>  
           </div>
 
@@ -43,8 +43,13 @@ export default function Creator(params: ICreator): JSX.Element{
               <p className="text-gray-600 ml-2 text-lg">{params.supporters}</p>
             </div>  
           </div>        
-          <CustomButton myStyle='bg-amber-500 mt-4' text='Support' toggleValue='modal' targetValue='#supporterModal' />
-          <SupporterModal/>
+          <CustomButton
+            myStyle='bg-amber-500 mt-4'
+            text={`${params.creatorAddress} Support`}
+            toggleValue='modal'
+            targetValue={ account === undefined ? "#exampleModalCenter" :'#supporterModal'} />
+          <SupporterModal />
+          <ConnectModal />
       </div>
   </div>
 </div>

@@ -39,14 +39,9 @@ export default function CreatorModal(): JSX.Element {
     }
   }
 
-
   const createAccount = async () => {
-    if (active) {
-      const pinataHash = await pinFileToPinata(profilePix) 
-       await createCreator(account, username, pinataHash, bio, network)
-    } else {
-      return <ConnectModal/>
-    }
+    const pinataHash = await pinFileToPinata(profilePix) 
+    await createCreator(account, username, pinataHash, bio, network)
   }
 
   return (
@@ -131,7 +126,10 @@ export default function CreatorModal(): JSX.Element {
                   m-0
                   focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" type="file" id="formFile" onChange={profileHandler} />
               </div>
-              <CustomButton text="Create Account" myStyle="bg-amber-500 w-full" action={() => { createAccount() }} />
+              <CustomButton
+                text={"Create Account"}
+                myStyle="bg-amber-500 w-full"
+                action={() => { createAccount() }} />           
             </div>
           </div>
         </div>

@@ -12,15 +12,17 @@ contract Donation {
        uint donationsReceived;
        bool isExist;
        string networkOption;
+       uint supporters;
     }
 
     event CreatorEvent (
-        string username,
+       string username,
        address payable walletAddress,
        string profilePix,
        string userbio,
        uint donationsReceived,
-       string networkOption
+       string networkOption,
+       uint supporters
     );
     
     // Support struct.
@@ -65,6 +67,8 @@ contract Donation {
      */
     function sendTip(string memory _message, uint _index) public payable {
         creatorList[_index].donationsReceived += msg.value;
+        creatorList[_index].supporters +=1;
+        
         // Must accept more than 0 ETH for a coffee.
         require(msg.value > 0, "Insufficient balance!");
 
@@ -99,6 +103,7 @@ contract Donation {
     // function to create new user account
     function setCreatorDetail(string memory username, string memory profilePix, string memory userbio, string memory networkOption) public { 
         uint _donationsReceived;
+        uint _supporters;
         /**
         *@dev require statment to block multiple entry
         */
@@ -111,8 +116,8 @@ contract Donation {
         }else if(creatorMap[username].isExist != false){
             revert CreatorAlreadyExist({message: "Username already exist"});
         }else{
-            creatorList.push(creators[msg.sender] = CreatorInfo(username, profilePix, payable(msg.sender), userbio, _donationsReceived, true, networkOption));
-            creatorList.push(creatorMap[username] = CreatorInfo(username, profilePix, payable(msg.sender), userbio, _donationsReceived, true, networkOption));
+            creatorList.push(creators[msg.sender] = CreatorInfo(username, profilePix, payable(msg.sender), userbio, _donationsReceived, true, networkOption, _supporters));
+            creatorList.push(creatorMap[username] = CreatorInfo(username, profilePix, payable(msg.sender), userbio, _donationsReceived, true, networkOption, _supporters));
         }
 
         // emit a Creator event
@@ -122,7 +127,8 @@ contract Donation {
         profilePix,
         userbio,
        _donationsReceived,
-       networkOption
+       networkOption,
+       _supporters
     );
     }
 

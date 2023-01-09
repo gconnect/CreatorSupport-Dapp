@@ -9,9 +9,7 @@ const resolution = new Resolution();
 // Resolve a Crypto Address From a Domain using the library
 export const resolveDomainUsingLibrary = (domain : string) => resolution
     .addr(domain, 'ETH')
-  .then((ethAddress) => {
-      console.log(ethAddress)
-    })
+  .then((ethAddress) =>  ethAddress)
     .catch((error) => {
         if (error.code === 'UnregisteredDomain') {
             console.log('Domain is not registered')

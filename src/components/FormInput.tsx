@@ -5,6 +5,7 @@ interface IFormInput {
   value: string;
   type: string;
   onChange: (e: React.FormEvent<HTMLInputElement>) => void;
+  disabled?: boolean;
 }
 
 export default function FormInput(params: IFormInput) : JSX.Element {
@@ -29,6 +30,7 @@ export default function FormInput(params: IFormInput) : JSX.Element {
           m-0
           focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none
         "
+        disabled= {params.disabled}
         id="exampleFormControlInput1"
       placeholder={params.placeholder}
       value={params.value}
