@@ -32,6 +32,7 @@ export default function Dashboard(): JSX.Element{
         </div>
         <div>
           <CustomButton text='Share Profile' myStyle='bg-amber-500' />
+          {/* <FacebookShareButton/> */}
           <CustomButton text='Withdraw' myStyle='bg-amber-500 mt-4' targetValue='#withdrawModal' toggleValue='modal'/>
           <WithdrawModal/>
         </div>

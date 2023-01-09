@@ -97,7 +97,7 @@ export default function SupporterModal(): JSX.Element {
                 </textarea>
                 <FormInput placeholder="Wallet address" value={creator === undefined ? undefined :creator.walletAddress} onChange={walletHandler} type="text" disabled={true} />   
                 
-                <p>Register your domain</p>  : <p className="text-black">{`Resolve to ${resolveDomain}`}</p>
+                {/* <p>Register your domain</p>  : <p className="text-black">{`Resolve to ${resolveDomain}`}</p> */}
                 
               </div>
               <CustomButton text="Support" myStyle="bg-amber-500 w-full" action={() =>{sendSupport()}}/>
