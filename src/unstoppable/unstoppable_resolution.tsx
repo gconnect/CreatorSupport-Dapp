@@ -7,9 +7,11 @@ const resolution = new Resolution();
 //resolution records and domain metadata in a single response.
 
 // Resolve a Crypto Address From a Domain using the library
-export const resolveDomainUsingLibrary = (domain : string) => resolution
-    .addr(domain, 'ETH')
-  .then((ethAddress) =>  ethAddress)
+export const resolveDomainUsingLibrary = (address : string) => resolution
+    .addr(address, "ETH")
+  .then((domain) =>
+    domain
+  )
     .catch((error) => {
         if (error.code === 'UnregisteredDomain') {
             console.log('Domain is not registered')
@@ -25,6 +27,12 @@ export const resolveDomainUsingLibrary = (domain : string) => resolution
         }
     });
 
+export const reverseResolution = async (address: string) => {
+  const domain = await resolution.reverse(address)
+  console.log("domain " + domain)
+  return domain
+}
+
 export async function resolveDomainUsingAPI(domain : string){
   const url = 'https://resolve.unstoppabledomains.com/domains/'
   try{
@@ -34,8 +42,9 @@ export async function resolveDomainUsingAPI(domain : string){
         'Content-Type': 'application/json',
       }
     })
-    console.log(response.data.meta.domain)
-    return response.data.meta.owner
+    // console.log(response.data.meta.domain)
+    console.log(response.data)
+    return response.data.meta.domain
   }catch(err){
     console.log(err)
   }

@@ -1,7 +1,7 @@
 import React from 'react'
 import { useQuery } from '@tanstack/react-query'
 import Creator from './Creator'
-import { getCreators } from '../utils/interact'
+import { getAllCreators, getCreators } from '../utils/interact'
 
 export default function FeaturedCreators() {  
       
@@ -24,11 +24,12 @@ export default function FeaturedCreators() {
           <div className='grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 justify-center p-8'>
             {data.map((creator, index) => <div key={index}>
               <Creator
+                id={creator.id}
                 name={creator.username}
                 bio={creator.userbio}
                 earnings={creator.donationsReceived/1e18 }
                 currency="MATIC" supporters={creator.supporters}
-                image={`https://ipfs.io/ipfs/${creator.profilePix}`}
+                image={`https://ipfs.io/ipfs/${creator.ipfsHash}`}
                 creatorAddress={`${creator.walletAddress.substring(0, 5)}...`}              
               />
             </div>

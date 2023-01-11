@@ -1,12 +1,17 @@
 import React from 'react'
 import { useQuery } from '@tanstack/react-query' 
-import { getCreator } from '../../utils/interact'
+import { getCreator, getCreators } from '../../utils/interact'
+import { useWeb3React } from '@web3-react/core'
 
 export default function EarningsTab(): JSX.Element{
-  
+    const { account } = useWeb3React()
+
    const { data } = useQuery({
     queryKey: ['creator'],
-    queryFn: async () => await getCreator(0)
+     queryFn: async () => {
+      const creators = await getCreators()
+      return creators.find(item => item.walletAddress === account)
+    }
   })
 
   console.log(data)

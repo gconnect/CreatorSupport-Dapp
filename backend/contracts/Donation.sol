@@ -9,7 +9,8 @@ contract Donation {
 
      using Counters for Counters.Counter;
     Counters.Counter private _creatorIds;
-
+    uint public creatorCounter;
+    
     struct CreatorInfo {
        uint id;
        string username;

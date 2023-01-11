@@ -17,6 +17,7 @@ export default function ConnectModal(): JSX.Element {
     try {
       await activate(Injected)
       localStorage.setItem("isWalletConnected", "true")
+      window.location.reload()
     } catch (err) {
       console.log(err)
     }
@@ -26,6 +27,7 @@ export default function ConnectModal(): JSX.Element {
     try {
       await activate(uauth)
       localStorage.setItem("isunstoppable", "true")
+      window.location.reload()
     } catch (err) {
       console.log(err)
     }
@@ -35,6 +37,7 @@ export default function ConnectModal(): JSX.Element {
     try {
       await activate(CoinbaseWallet)
       localStorage.setItem("isCoinbase", "true")
+      window.location.reload()
     } catch (err) {
       console.log(err)
     }

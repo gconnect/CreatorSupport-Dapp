@@ -4,6 +4,8 @@ import ConnectModal from './Modal/ConnectModal'
 import CustomButton from './CustomButton'
 import { useWeb3React } from '@web3-react/core'
 import { Injected } from '../utils/Connectors'
+import { getAllCreators, getCreators, getCreatorSupporterCount } from '../utils/interact'
+import { useQuery } from '@tanstack/react-query'
 
 export default function Header(): JSX.Element{
   const { deactivate, account, active, activate } = useWeb3React();
@@ -11,9 +13,11 @@ export default function Header(): JSX.Element{
   const disconnect = async () => {
     try {
       deactivate()
-      localStorage.setItem("isWalletConnected", "false")
-      localStorage.setItem("isunstoppable", "false")
-      localStorage.setItem("isCoinbase", "false")
+      // localStorage.setItem("isWalletConnected", "false")
+      // localStorage.setItem("isunstoppable", "false")
+      // localStorage.setItem("isCoinbase", "false")
+      localStorage.clear()
+      window.location.reload()
     } catch (err) {
       console.log(err)
     }
@@ -36,6 +40,15 @@ export default function Header(): JSX.Element{
   }, [])
   console.log(account)
 
+
+   const { data  } = useQuery({
+    queryKey: ['creator'],
+    queryFn: async () => {
+      const creators = await getCreators()
+      return creators.find(item => item.walletAddress === account)
+    }
+   })
+  
   return (
       <header>
         <nav className='p-4 flex justify-between'>
@@ -45,7 +58,10 @@ export default function Header(): JSX.Element{
             <div className='flex'>
               <CustomButton myStyle='bg-black border-2 border-amber-500 text-amber-500' text={`Connected to ${account?.substring(0, 5)}..`} />
               <CustomButton myStyle='bg-amber-500' text="Disconnect" action={disconnect} />
-              <CustomButton myStyle='bg-amber-500' text='Dashboard' action={() => window.open('dashboard')} />
+              {data !== undefined ?
+                <CustomButton myStyle='bg-amber-500' text='Dashboard' action={() => window.open('dashboard')} /> :
+                null
+                }
             </div> :
             <div>
               <CustomButton myStyle='bg-amber-500' text='Connect Wallet' toggleValue='modal' targetValue='#exampleModalCenter' />

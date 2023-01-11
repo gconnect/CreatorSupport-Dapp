@@ -2,15 +2,29 @@ import { createAlchemyWeb3 } from "@alch/alchemy-web3";
 import { BigNumber } from "ethers";
 import { AbiItem } from 'web3-utils'
 import contractABI from "../Donation.json"
+import { ethers } from "ethers";
 
 const alchemyUrl = `https://polygon-mumbai.g.alchemy.com/v2/${process.env.REACT_APP_ALCHEMY_MUMBAI_API_KEY}`;
 const web3 = createAlchemyWeb3(alchemyUrl);
-const contractAddress = "0xf327B1bECe58b394D68FCCB97214D6a23B5C4700";
+const contractAddress = "0x8A5E7B981F418e4db93a7aC2421CBF75502FfA67";
 
  export const donationContract = new web3.eth.Contract(
   contractABI.abi as AbiItem[],
   contractAddress
-);
+ );
+
+//  export default function donationContract() {
+//   const provider = new ethers.providers.Web3Provider(window.ethereum);
+//   const signer = provider.getSigner(
+//     "0x65645067615CAFCc37AB63ADEe2bc1231Fb257f3" // wallet address of signer
+//   );
+//   let contract = new ethers.Contract(
+//     contractAddress, // Our contract adress
+//     contractABI.abi,
+//     signer
+//   );
+//   return contract;
+// }
 
  /*
     * Save the new feed to the blockchain
@@ -36,20 +50,41 @@ export const sendTip = async (address: string | null | undefined, message: strin
 }
 // get all creators
 export const getAllCreators = async () => {
+  const creatorCount = await donationContract.methods.getCreatorCount().call()
+
   const creators  = []
-  const creatorCount = await donationContract.methods.getAllCreators().call()
-  for (let i = 0; i <= creatorCount.length; i++){
-    const creatorIndex = await donationContract.methods.getCreatorInfo(i).call()
-    creators.push(creatorIndex)
+  for (let i = 0; i < creatorCount.length; i++){
+    let creator = await donationContract.methods.getCreatorInfo(i).call()
+    console.log(creator)
+    creator.index = i;
+    console.log(creator.index = i)
+    creators.push(creator)
   }
-  console.log(creators)
+  // console.log(creatorCount)
   return creators;
+
+  // const _creatorLength = await donationContract.methods.getAllCreators().call()
+  // const _creators = []
+
+  // for (let i = 0; i < _creatorLength; i++) {
+  //   let _creator = new Promise<any>(async (resolve) => {
+  //     let creatorObj = await donationContract.methods.getCreatorInfo(i).call()
+  //     creatorObj.index = i
+
+  //     resolve(creatorObj)
+  //   })
+  //   _creators.push(_creator)
+  // }
+
+  // const creators = await Promise.all(_creators)
+  // console.log(creators)
+  // return creators
 }
 
 // Use this
 export const getCreators = async () => {
   const creatorCount = await donationContract.methods.getCreatorList().call()
-  // console.log(creatorCount)
+  console.log(creatorCount)
   return creatorCount;
 
   // Working with event
@@ -89,45 +124,3 @@ export const getCreatorBal = async (index : number) => {
   console.log(earnings)
   return earnings
 }
-
-//   export const getCurrentWalletConnected = async () => {
-//   if (window.ethereum) {
-//     try {
-//       const addressArray = await window.ethereum.request({
-//         method: "eth_accounts",
-//       });
-//       if (addressArray.length > 0) {
-//         return {
-//           address: addressArray[0],
-//           status: "👆🏽 Write a message in the text-field above.",
-//         };
-//       } else {
-//         return {
-//           address: "",
-//           status: "🦊 Connect to Metamask using the top right button.",
-//         };
-//       }
-//     } catch (err) {
-//       return {
-//         address: "",
-//         status: "😥 " + err,
-//       };
-//     }
-//   } else {
-//     return {
-//       address: "",
-//       status: (
-//         <span>
-//           <p>
-//             {" "}
-//             🦊{" "}
-//             <a target="_blank" href={`https://metamask.io/download.html`}>
-//               You must install Metamask, a virtual Ethereum wallet, in your
-//               browser.
-//             </a>
-//           </p>
-//         </span>
-//       ),
-//     };
-//   }
-// };

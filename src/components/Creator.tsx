@@ -1,11 +1,14 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import CustomButton from './CustomButton'
 import CircleCheck from '../images/circle-check.svg'
 import SupporterModal from './Modal/SupporterModal'
 import { useWeb3React } from '@web3-react/core'
 import ConnectModal from './Modal/ConnectModal'
 import { BigNumber } from 'ethers'
+import { useQuery } from '@tanstack/react-query'
+import { getCreators }  from '../utils/interact'
 interface ICreator {
+  id: number;
   image: string,
   name: string,
   bio: string,
@@ -17,7 +20,20 @@ interface ICreator {
 
 export default function Creator(params: ICreator): JSX.Element{
     const { account } = useWeb3React()
+   const[index, setIndex] = useState<number>(0)
+  let creatorIndex = useRef<number>();
 
+  const { data } = useQuery({
+    queryKey: ['creator'],
+    queryFn: async () => {
+      const creators = await getCreators()
+      creators.forEach((item) => {
+       setIndex(creatorIndex.current = item.id)
+      })
+      return creatorIndex;
+    }
+  })
+  console.log(data)
 
   return (
    <div className="flex justify-center m-4">
@@ -47,8 +63,8 @@ export default function Creator(params: ICreator): JSX.Element{
             myStyle='bg-amber-500 mt-4'
             text={`${params.creatorAddress} Support`}
             toggleValue='modal'
-            targetValue={ account === undefined ? "#exampleModalCenter" :'#supporterModal'} />
-          <SupporterModal />
+            targetValue={account === undefined ? "#exampleModalCenter" : '#supporterModal'} action={() => alert(params.id)} />
+          <SupporterModal myId={params.id} username={params.name} walletAddress ={params.creatorAddress} />
           <ConnectModal />
       </div>
   </div>
