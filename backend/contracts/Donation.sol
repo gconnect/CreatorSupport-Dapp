@@ -1,24 +1,31 @@
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.7;
+import "hardhat/console.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
+
 
 contract Donation {
 
+     using Counters for Counters.Counter;
+    Counters.Counter private _creatorIds;
+
     struct CreatorInfo {
+       uint id;
        string username;
-       string profilePix;
+       string ipfsHash;
        address payable walletAddress;
        string userbio;
        uint donationsReceived;
-       bool isExist;
        string networkOption;
        uint supporters;
     }
 
     event CreatorEvent (
+       uint id,
        string username,
        address payable walletAddress,
-       string profilePix,
+       string ipfsHash,
        string userbio,
        uint donationsReceived,
        string networkOption,
@@ -49,17 +56,80 @@ contract Donation {
         owner = payable(msg.sender);
     }
 
-    mapping(address => CreatorInfo) creators;
-    mapping(string => CreatorInfo) creatorMap;
-
-
+    mapping(address => bool) isAddressExist;
+    mapping(string => bool) isUsernameExist;
     // List of all supporters.
     Supporter[] supporters;
     CreatorInfo[] creatorList;
 
-    // custom error
-    error CreatorAlreadyExist(string message);
+     // function to create new creator account
+    function setCreatorDetail(
+        string memory _username, 
+        string memory _ipfsHash, 
+        string memory _userbio, 
+        string memory _networkOption) public { 
 
+        // Validation
+        require(bytes(_username).length > 0);
+        require(bytes(_ipfsHash).length > 0);
+        require(bytes(_userbio).length > 0);
+        
+        uint _donationsReceived;
+        uint _supporters;
+        /**
+        *@dev require statment to block multiple entry
+        */
+        require(isAddressExist[msg.sender] == false, "Address already exist");
+        require(isUsernameExist[_username] == false, "Username already exist");
+
+         /* Increment the counter */
+        _creatorIds.increment();
+
+        creatorList.push(CreatorInfo(_creatorIds.current(),_username, _ipfsHash, payable(msg.sender), _userbio, _donationsReceived, _networkOption, _supporters));
+        isAddressExist[msg.sender] = true;
+        isUsernameExist[_username] = true;
+
+        // emit a Creator event
+        emit CreatorEvent (
+        _creatorIds.current(),
+        _username,
+        payable(msg.sender),
+        _ipfsHash,
+        _userbio,
+       _donationsReceived,
+       _networkOption,
+       _supporters
+    );
+    }
+
+    // function to get all creators
+    function getCreatorCount() public view returns (uint){
+        return creatorList.length;
+    }
+
+      // Return the entire list of creators
+    function getCreatorList() public view returns (CreatorInfo[] memory) {
+        return creatorList;
+    }
+
+   // Get a single creator by id
+    function getCreatorObj(uint _index) public view returns (CreatorInfo memory) {
+         return creatorList[_index];
+    }
+
+     // function to get creator info
+    function getCreatorInfo(uint index) public view returns (uint id, string memory,  string memory, address, string memory, uint, string memory, uint){
+        CreatorInfo storage creatorDetail  = creatorList[index];
+        return (
+        creatorDetail.id,   
+        creatorDetail.username, 
+        creatorDetail.ipfsHash, 
+        creatorDetail.walletAddress, 
+        creatorDetail.userbio, 
+        creatorDetail.donationsReceived, 
+        creatorDetail.networkOption,
+        creatorDetail.supporters);
+    }
 
     /**
      * @dev send tip to a creator (sends an ETH tip and leaves a memo)
@@ -99,49 +169,7 @@ contract Donation {
         Supporter storage supporterDetail  = supporters[index];
         return (supporterDetail.from, supporterDetail.timestamp, supporterDetail.message);
     }
-
-    // function to create new user account
-    function setCreatorDetail(string memory username, string memory profilePix, string memory userbio, string memory networkOption) public { 
-        uint _donationsReceived;
-        uint _supporters;
-        /**
-        *@dev require statment to block multiple entry
-        */
-        
-        // require(creators[msg.sender].isExist==false,"Creators detail already registered");
-        // require(creatorMap[username].isExist == false,  "username not available, choose a different name");
-
-        if(creators[msg.sender].isExist != false){
-            revert CreatorAlreadyExist({message: "Account already exist"});
-        }else if(creatorMap[username].isExist != false){
-            revert CreatorAlreadyExist({message: "Username already exist"});
-        }else{
-            creatorList.push(creators[msg.sender] = CreatorInfo(username, profilePix, payable(msg.sender), userbio, _donationsReceived, true, networkOption, _supporters));
-            creatorList.push(creatorMap[username] = CreatorInfo(username, profilePix, payable(msg.sender), userbio, _donationsReceived, true, networkOption, _supporters));
-        }
-
-        // emit a Creator event
-        emit CreatorEvent (
-        username,
-        payable(msg.sender),
-        profilePix,
-        userbio,
-       _donationsReceived,
-       networkOption,
-       _supporters
-    );
-    }
-
-    // Return the entire list of creators
-    function getCreatorList() public view returns (CreatorInfo[] memory) {
-        return creatorList;
-    }
-
-    // Get a single creator by id
-    function getCreatorObj(uint _index) public view returns (CreatorInfo memory) {
-         return creatorList[_index];
-    }
-
+    
     // Return the entire list of creators
     function getSupporterList() public view returns (Supporter[] memory) {
         return supporters;
@@ -150,17 +178,6 @@ contract Donation {
     // get a single supporter by id
      function getSupporterObj(uint _index) public view returns (Supporter memory) {
          return supporters[_index];
-    }
-
-    // function to get all creators
-    function getAllCreators() public view returns (uint){
-        return creatorList.length;
-    }
-
-    // function to get creator info
-    function getCreatorInfo(uint index) public view returns (string memory,  string memory, address, string memory, uint, string memory, uint){
-        CreatorInfo storage creatorDetail  = creatorList[index];
-        return (creatorDetail.username, creatorDetail.profilePix, creatorDetail.walletAddress, creatorDetail.userbio, creatorDetail.donationsReceived, creatorDetail.networkOption,creatorDetail.supporters);
     }
 
     // function to get creator balance
