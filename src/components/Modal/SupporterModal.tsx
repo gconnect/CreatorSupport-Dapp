@@ -57,7 +57,7 @@ export default function SupporterModal(param: IParams): JSX.Element {
 
   return (
     <div>
-      <div className="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto" id="supporterModal" tabIndex={-1} aria-labelledby="exampleModalCenterTitle" aria-modal="true" role="dialog">
+      <div className="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto" id="supporterModal"  aria-labelledby="exampleModalCenterTitle" aria-modal="true" role="dialog">
         <div className="modal-dialog modal-dialog-centered relative w-auto pointer-events-none">
           <div className="modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white bg-clip-padding rounded-md outline-none text-current">
             <div className="modal-header flex flex-shrink-0 items-center justify-between p-4 border-b border-gray-200 rounded-t-md">
@@ -103,7 +103,7 @@ export default function SupporterModal(param: IParams): JSX.Element {
                 {/* <p>Register your domain</p>  : <p className="text-black">{`Resolve to ${resolveDomain}`}</p> */}
                 
               </div>
-              <CustomButton id={param.myId} text="Support" myStyle="bg-amber-500 w-full" action={() =>{sendSupport()}}/>
+              <CustomButton text="Support" myStyle="bg-amber-500 w-full" action={() =>{sendSupport()}}/>
             </div>
           </div>
         </div>

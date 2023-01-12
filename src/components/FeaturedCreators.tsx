@@ -2,6 +2,7 @@ import React from 'react'
 import { useQuery } from '@tanstack/react-query'
 import Creator from './Creator'
 import { getAllCreators, getCreators } from '../utils/interact'
+import SupporterModal from './Modal/SupporterModal'
 
 export default function FeaturedCreators() {  
       
@@ -24,7 +25,7 @@ export default function FeaturedCreators() {
           <div className='grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 justify-center p-8'>
             {data.map((creator, index) => <div key={index}>
               <Creator
-                id={creator.id}
+                id={creator.id -1 }
                 name={creator.username}
                 bio={creator.userbio}
                 earnings={creator.donationsReceived/1e18 }
@@ -32,6 +33,7 @@ export default function FeaturedCreators() {
                 image={`https://ipfs.io/ipfs/${creator.ipfsHash}`}
                 creatorAddress={`${creator.walletAddress.substring(0, 5)}...`}              
               />
+             {/* <SupporterModal myId={creator.id} username={creator.username} walletAddress ={creator.creatorAddress} /> */}
             </div>
             )}       
           </div>

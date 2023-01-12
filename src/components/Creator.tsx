@@ -6,7 +6,8 @@ import { useWeb3React } from '@web3-react/core'
 import ConnectModal from './Modal/ConnectModal'
 import { BigNumber } from 'ethers'
 import { useQuery } from '@tanstack/react-query'
-import { getCreators }  from '../utils/interact'
+import { getCreators } from '../utils/interact'
+import BootStrapSupporter from './Modal/BootStrapSupporter'
 interface ICreator {
   id: number;
   image: string,
@@ -20,7 +21,8 @@ interface ICreator {
 
 export default function Creator(params: ICreator): JSX.Element{
     const { account } = useWeb3React()
-   const[index, setIndex] = useState<number>(0)
+  const [index, setIndex] = useState<number>(0)
+  const [show, setShow] = useState<boolean>(false)
   let creatorIndex = useRef<number>();
 
   const { data } = useQuery({
@@ -35,6 +37,13 @@ export default function Creator(params: ICreator): JSX.Element{
   })
   console.log(data)
 
+ const handleOpenModal = () => {
+    if (account) {
+      setShow(true)
+    } else {
+      setShow(false)
+    }
+  }
   return (
    <div className="flex justify-center m-4">
     <div className="flex flex-col md:flex-row md:max-w-xl rounded-lg bg-white shadow-lg">
@@ -63,8 +72,9 @@ export default function Creator(params: ICreator): JSX.Element{
             myStyle='bg-amber-500 mt-4'
             text={`${params.creatorAddress} Support`}
             toggleValue='modal'
-            targetValue={account === undefined ? "#exampleModalCenter" : '#supporterModal'} action={() => alert(params.id)} />
-          <SupporterModal myId={params.id} username={params.name} walletAddress ={params.creatorAddress} />
+            targetValue={account === undefined ? "#exampleModalCenter" : '#supporterModal2'} action={handleOpenModal} />
+          {/* <SupporterModal myId={params.id} username={params.name} walletAddress ={params.creatorAddress} /> */}
+          <BootStrapSupporter myId={params.id} username={ params.name} walletAddress = {params.creatorAddress} show={show} onHide={() => setShow(false)} />
           <ConnectModal />
       </div>
   </div>
