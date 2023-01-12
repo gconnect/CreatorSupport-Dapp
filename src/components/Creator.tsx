@@ -8,6 +8,7 @@ import { BigNumber } from 'ethers'
 import { useQuery } from '@tanstack/react-query'
 import { getCreators } from '../utils/interact'
 import BootStrapSupporter from './Modal/BootStrapSupporter'
+import CustomModal from './Modal/CustomModal'
 interface ICreator {
   id: number;
   image: string,
@@ -37,17 +38,21 @@ export default function Creator(params: ICreator): JSX.Element{
   })
   console.log(data)
 
- const handleOpenModal = () => {
-    if (account) {
+  const handleOpenModal = () => {
+   if (account) {
       setShow(true)
     } else {
       setShow(false)
     }
   }
+
+  const handleClose = () => {
+    setShow(false)
+  }
   return (
-   <div className="flex justify-center m-4">
+   <div className="flex justify-center m-4 w-full">
     <div className="flex flex-col md:flex-row md:max-w-xl rounded-lg bg-white shadow-lg">
-      <img className=" w-full h-96 md:h-auto object-cover md:w-48 rounded-t-lg md:rounded-none md:rounded-l-lg" src={params.image} alt="profile pix" />
+      <img className=" w-full lg:h-96 md:h-auto object-cover md:w-48 rounded-t-lg md:rounded-none md:rounded-l-lg" src={params.image} alt="profile pix" />
       <div className="p-6 flex flex-col justify-start">
         <h5 className="text-gray-900 text-xl font-medium mb-2">{params.name}</h5>
         <p className="text-gray-700 text-base mb-4">
@@ -69,12 +74,12 @@ export default function Creator(params: ICreator): JSX.Element{
             </div>  
           </div>        
           <CustomButton
-            myStyle='bg-amber-500 mt-4'
+            myStyle='bg-amber-500 mt-4 w-full'
             text={`${params.creatorAddress} Support`}
             toggleValue='modal'
             targetValue={account === undefined ? "#exampleModalCenter" : '#supporterModal2'} action={handleOpenModal} />
           {/* <SupporterModal myId={params.id} username={params.name} walletAddress ={params.creatorAddress} /> */}
-          <BootStrapSupporter myId={params.id} username={ params.name} walletAddress = {params.creatorAddress} show={show} onHide={() => setShow(false)} />
+          <CustomModal myId={params.id} username={params.name} walletAddress={params.creatorAddress} show={show} onHide={() =>handleClose()} />
           <ConnectModal />
       </div>
   </div>
