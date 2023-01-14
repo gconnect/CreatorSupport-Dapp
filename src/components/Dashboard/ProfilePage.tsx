@@ -1,36 +1,28 @@
 import React from 'react'
-import profileImage from '../../images/profile-pix.svg'
 import SupportersForm from './SupportersForm'
-import { useQuery } from '@tanstack/react-query' 
-import { getCreator, getCreators } from '../../utils/interact'
-import { useWeb3React } from '@web3-react/core'
+interface IParams {
+  id: number;
+  username: string;
+  ipfsHash: string;
+  userbio: string;
+  walletAddress: string;
+}
 
-export default function ProfilePage() {
-  const { account } = useWeb3React()
-
-  const { data } = useQuery({
-    queryKey: ['creator'],
-    queryFn: async () => {
-      const creators = await getCreators()
-      return creators.find(item => item.walletAddress === account)
-    }
-  })
-
-  console.log(data)
+export default function ProfilePage(param: IParams) {
   return (
     <div>
       <div className='flex'>
         <div className='flex'>          
-          <img className='rounded-full' src={data === undefined ? "" : `https://ipfs.io/ipfs/${data.ipfsHash}`} width="100px" alt="profile-pix" />
+          <img className='rounded-full' src={`https://ipfs.io/ipfs/${param.ipfsHash}`} width="100px" alt="profile-pix" />
           <div className='m-4'>
-            <p className='text-xl'>{`Hi ${data === undefined ? "" : data.username}`}</p>
-            <p> {data === undefined ? "" : data.userbio}</p>
+            <p className='text-xl'>{`Hi ${param.username}`}</p>
+            <p> {param.userbio}</p>
           </div>
         </div>
         <div>
         </div>
       </div>
-      <SupportersForm/>
+      <SupportersForm id={param.id} walletAddress={param.walletAddress} />
     </div>
   )
 }

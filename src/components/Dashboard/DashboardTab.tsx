@@ -2,7 +2,17 @@ import React from 'react'
 import EarningsTab from './EarningsTab'
 import ProfilePage from './ProfilePage'
 
-export default function DashboardTab() : JSX.Element {
+interface IParams {
+  id: number;
+  username: string;
+  userbio: string;
+  walletAddress: string;
+  ipfsHash: string;
+  donationsReceived: number;
+  supporters: number;
+}
+
+export default function DashboardTab(param: IParams) : JSX.Element {
   return (
     <div>
       <ul className="nav nav-tabs flex flex-col md:flex-row flex-wrap list-none border-b-0 pl-0 mb-4" id="tabs-tab"
@@ -45,10 +55,10 @@ export default function DashboardTab() : JSX.Element {
     </ul>
     <div className="tab-content" id="tabs-tabContent">
       <div className="tab-pane fade show active" id="tabs-home" role="tabpanel" aria-labelledby="tabs-home-tab">
-        <EarningsTab/>
+          <EarningsTab donationsReceived={ param.donationsReceived} supporters={param.supporters} />
       </div>
       <div className="tab-pane fade" id="tabs-profile" role="tabpanel" aria-labelledby="tabs-profile-tab">
-        <ProfilePage/>
+          <ProfilePage id={param.id} userbio={ param.userbio} username={param.username} ipfsHash={param.ipfsHash} walletAddress={param.walletAddress} />
       </div>
     </div>
     </div>
