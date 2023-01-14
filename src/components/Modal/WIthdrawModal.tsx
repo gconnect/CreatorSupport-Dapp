@@ -2,15 +2,18 @@ import React, { ChangeEvent, useState } from "react";
 import { useWeb3React } from '@web3-react/core'
 import CustomButton from "../CustomButton";
 import FormInput from "../FormInput";
-import { creatorWithdrawTip, sendTip } from "../../utils/interact";
+import { creatorWithdrawTip } from "../../utils/interact";
 import { ethers } from "ethers";
 
-export default function WithdrawModal(): JSX.Element {
-  const {account, activate } = useWeb3React();
+  interface IParams {
+    id: number;
+    walletAddress: string;
+  }
+
+export default function WithdrawModal(param: IParams): JSX.Element {
+  const {account } = useWeb3React();
   const [amount, setAmount] = useState<string>("")
   const [walletAddress, setWalletAddress] = useState<string>("")
-  const [comment, setComment] = useState<string>("")
-
 
   const amountHandler = (e: React.FormEvent<HTMLInputElement>) => {
     setAmount(e.currentTarget.value)
@@ -20,7 +23,7 @@ export default function WithdrawModal(): JSX.Element {
     setWalletAddress(e.currentTarget.value)
   }
   const withdrawTip = async () => {
-    await creatorWithdrawTip(account, 0, ethers.utils.parseUnits(amount, "ether"))
+    await creatorWithdrawTip(account, param.id, ethers.utils.parseUnits(amount, "ether"))
   }
 
   return (
@@ -39,6 +42,7 @@ export default function WithdrawModal(): JSX.Element {
             <div className="modal-body relative p-4">
               <div className="flex justify-center flex flex-col">
                 <FormInput placeholder="Amount" value={amount} onChange={amountHandler} type="number" />
+                <FormInput placeholder="Wallet Address" value={param.walletAddress} onChange={amountHandler} type="text" disabled={true} />
               </div>
               <CustomButton text="Withdraw" myStyle="bg-amber-500 w-full" action={() =>{withdrawTip()}}/>
             </div>

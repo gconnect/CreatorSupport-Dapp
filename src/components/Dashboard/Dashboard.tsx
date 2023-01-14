@@ -46,7 +46,7 @@ export default function Dashboard(): JSX.Element{
         <div>
           <ShareButton/>          
           <CustomButton text='Withdraw' myStyle='bg-amber-500 mt-4' targetValue='#withdrawModal' toggleValue='modal'/>
-          <WithdrawModal/>
+          <WithdrawModal id={data.id} walletAddress={data.walletAddress} />
         </div>
       </div>
         <DashboardTab
