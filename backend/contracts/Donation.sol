@@ -189,7 +189,7 @@ contract Donation {
     }
 
     // Creator withdraw function. This function can be called by the creator
-    function creatorWithdrawTip(uint index, uint amount) public{
+    function creatorWithdrawTip(uint index, uint amount) public returns (address payable _creatorAddress){
         CreatorInfo storage creatorDetail  =  creatorList[index];
         uint creatorBal = creatorDetail.donationsReceived;    
         address payable creatorAddress = creatorDetail.walletAddress;
@@ -204,6 +204,7 @@ contract Donation {
         // Note that "receipient" is declared as payable
         (bool success, ) = creatorAddress.call{value: amount}("");
         require(success, "Failed to send Ether");  
+        return creatorAddress;
     }
 
     //  function to withdraw all ether from the contract
