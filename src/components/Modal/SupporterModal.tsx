@@ -45,7 +45,7 @@ export default function SupporterModal(params: IParams) {
   console.log("paramId", params.myId)
 
   const domainResolution = async () => {
-    const response = await resolveDomainUsingAPI(account as string)
+    const response = await resolveDomainUsingAPI(params.walletAddress)
     setResolveDomain(response)
     }
   
