@@ -32,7 +32,7 @@ export default function FeaturedCreators() {
                 earnings={creator.donationsReceived/1e18 }
                 currency="MATIC" supporters={creator.supporters}
                 image={`https://ipfs.io/ipfs/${creator.ipfsHash}`}
-                creatorAddress={truncate(creator.walletAddress)}              
+                creatorAddress={creator.walletAddress}              
               />
              {/* <SupporterModal myId={creator.id} username={creator.username} walletAddress ={creator.creatorAddress} /> */}
             </div>

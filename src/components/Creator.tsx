@@ -9,6 +9,7 @@ import { useQuery } from '@tanstack/react-query'
 import { getCreators } from '../utils/interact'
 import BootStrapSupporter from './Modal/BootStrapSupporter'
 import CustomModal from './Modal/SupporterModal'
+import { truncate } from '../utils/truncate'
 interface ICreator {
   id: number;
   image: string,
@@ -75,7 +76,7 @@ export default function Creator(params: ICreator): JSX.Element{
           </div>        
           <CustomButton
             myStyle='bg-amber-500 mt-4 w-full'
-            text={`${params.creatorAddress} Support`}
+            text={`${truncate(params.creatorAddress)} Support`}
             toggleValue='modal'
             targetValue={account === undefined ? "#exampleModalCenter" : '#supporterModal2'} action={handleOpenModal} />
           {/* <SupporterModal myId={params.id} username={params.name} walletAddress ={params.creatorAddress} /> */}
