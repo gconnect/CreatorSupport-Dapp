@@ -4,11 +4,14 @@ import ConnectModal from './Modal/ConnectModal'
 import CustomButton from './CustomButton'
 import { useWeb3React } from '@web3-react/core'
 import { Injected } from '../utils/Connectors'
-import { getAllCreators, getCreators, getCreatorSupporterCount } from '../utils/interact'
+import { getCreators } from '../utils/interact'
 import { useQuery } from '@tanstack/react-query'
+import { resolveDomainUsingAPI } from "../unstoppable/unstoppable_resolution"
+import { truncate } from '../utils/truncate'
 
 export default function Header(): JSX.Element{
   const { deactivate, account, active, activate } = useWeb3React();
+  const [resolveDomain, setResolveDomain] = useState<string | null >("")
 
   const disconnect = async () => {
     try {
@@ -21,6 +24,10 @@ export default function Header(): JSX.Element{
     } catch (err) {
       console.log(err)
     }
+  }
+  const domainResolution = async () => {
+    const response = await resolveDomainUsingAPI(account as string)
+    setResolveDomain(response)
   }
 
   useEffect(() => {
@@ -36,6 +43,7 @@ export default function Header(): JSX.Element{
         }
       }
     }
+    domainResolution()
     connectWalletOnPageLoad()
   }, [])
   console.log(account)
@@ -56,7 +64,7 @@ export default function Header(): JSX.Element{
         <div>
           {active ?
             <div className='flex'>
-              <CustomButton myStyle='bg-black border-2 border-amber-500 text-amber-500' text={`Connected to ${account?.substring(0, 5)}..`} />
+              <CustomButton myStyle='bg-black border-2 border-amber-500 text-amber-500' text={ `Connected to ${ resolveDomain === null || undefined || " " ? truncate(account) : resolveDomain}` } />
               <CustomButton myStyle='bg-amber-500' text="Disconnect" action={disconnect} />
               {data !== undefined ?
                 <CustomButton myStyle='bg-amber-500' text='Dashboard' action={() => window.open('dashboard')} /> :

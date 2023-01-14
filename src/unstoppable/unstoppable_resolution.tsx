@@ -8,7 +8,7 @@ const resolution = new Resolution();
 
 // Resolve a Crypto Address From a Domain using the library
 export const resolveDomainUsingLibrary = (address : string) => resolution
-    .addr(address, "ETH")
+  .addr(address, "ETH")
   .then((domain) =>
     domain
   )
@@ -34,7 +34,7 @@ export const reverseResolution = async (address: string) => {
 }
 
 export async function resolveDomainUsingAPI(domain : string){
-  const url = 'https://resolve.unstoppabledomains.com/domains/'
+  const url = 'https://resolve.unstoppabledomains.com/reverse/'
   try{
     const response =  await  axios.get(`${url}${domain}`, {
       headers: {
@@ -43,9 +43,18 @@ export async function resolveDomainUsingAPI(domain : string){
       }
     })
     // console.log(response.data.meta.domain)
-    console.log(response.data)
+    console.log("domain api" ,response.data.meta.domain)
     return response.data.meta.domain
   }catch(err){
     console.log(err)
   }
+}
+
+export function reverseUrl(address) {
+  resolution
+    .reverse(address, {location: 'UNSLayer2'})
+    .then((domain) => console.log(address, 'reversed to url', domain))
+    // domain consists of the domain with reverse resolution to that address
+    // use this domain in your application
+    .catch(console.error);
 }

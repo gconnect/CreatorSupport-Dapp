@@ -8,7 +8,7 @@ import { BigNumber } from 'ethers'
 import { useQuery } from '@tanstack/react-query'
 import { getCreators } from '../utils/interact'
 import BootStrapSupporter from './Modal/BootStrapSupporter'
-import CustomModal from './Modal/CustomModal'
+import CustomModal from './Modal/SupporterModal'
 interface ICreator {
   id: number;
   image: string,
@@ -79,7 +79,7 @@ export default function Creator(params: ICreator): JSX.Element{
             toggleValue='modal'
             targetValue={account === undefined ? "#exampleModalCenter" : '#supporterModal2'} action={handleOpenModal} />
           {/* <SupporterModal myId={params.id} username={params.name} walletAddress ={params.creatorAddress} /> */}
-          <CustomModal myId={params.id} username={params.name} walletAddress={params.creatorAddress} show={show} onHide={() =>handleClose()} />
+          <SupporterModal myId={params.id} username={params.name} walletAddress={params.creatorAddress} show={show} onHide={() =>handleClose()} />
           <ConnectModal />
       </div>
   </div>

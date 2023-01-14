@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import Creator from './Creator'
 import { getAllCreators, getCreators } from '../utils/interact'
 import SupporterModal from './Modal/SupporterModal'
+import { truncate } from '../utils/truncate'
 
 export default function FeaturedCreators() {  
       
@@ -31,7 +32,7 @@ export default function FeaturedCreators() {
                 earnings={creator.donationsReceived/1e18 }
                 currency="MATIC" supporters={creator.supporters}
                 image={`https://ipfs.io/ipfs/${creator.ipfsHash}`}
-                creatorAddress={`${creator.walletAddress.substring(0, 5)}...`}              
+                creatorAddress={truncate(creator.walletAddress)}              
               />
              {/* <SupporterModal myId={creator.id} username={creator.username} walletAddress ={creator.creatorAddress} /> */}
             </div>

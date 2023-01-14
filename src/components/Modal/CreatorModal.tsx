@@ -1,10 +1,10 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import { useWeb3React } from '@web3-react/core'
 import CustomButton from "../CustomButton";
 import FormInput from "../FormInput";
 import { createCreator } from "../../utils/interact";
-import ConnectModal from "./ConnectModal";
 import { pinFileToPinata } from "../../pinata/PinFile";
+import { resolveDomainUsingAPI, reverseResolution } from "../../unstoppable/unstoppable_resolution"
 
 export default function CreatorModal(): JSX.Element {
   const { activate, account, active } = useWeb3React();
@@ -13,6 +13,7 @@ export default function CreatorModal(): JSX.Element {
   const [network, setNetwork] = useState<string>("")
   const [walletAddress, setWalletAddress] = useState<string>("")
   const [profilePix, setProfilePix] = useState<string | File | number | readonly string[] | undefined>(undefined)
+  const [resolveDomain, setResolveDomain] = useState<string | null >("")
 
   const userHandler = (e: React.FormEvent<HTMLInputElement>) => {
     setUsername(e.currentTarget.value)
@@ -44,6 +45,14 @@ export default function CreatorModal(): JSX.Element {
     await createCreator(account, username, pinataHash, bio, network)
   }
 
+    const domainResolution = async () => {
+    const response = await resolveDomainUsingAPI(account as string)
+    setResolveDomain(response)
+    }
+  
+  useEffect(() => {
+      domainResolution()
+    })
   return (
     <div>
       <div className="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto" id="creatorModal" tabIndex={-1} aria-labelledby="exampleModalCenterTitle" aria-modal="true" role="dialog">
@@ -107,7 +116,8 @@ export default function CreatorModal(): JSX.Element {
                         <option disabled value="2">Celo</option>
                         <option disabled value="3">Algorand</option>
                 </select>
-                {/* <FormInput placeholder="Enter your wallet address" value={walletAddress} onChange={walletHandler} type="text" /> */}
+                <label className="form-label inline-block mb-2 text-gray-700 my-2"> Wallet Address </label>
+                <FormInput placeholder="Wallet Address" value={resolveDomain === null || undefined || " "  ? account as string : resolveDomain } disabled={true} type="text" onChange={walletHandler} />
                   <label htmlFor="formFile" className="form-label inline-block mb-2 text-gray-700">Upload your profile picture</label>
                   <input className="form-control
                   block
