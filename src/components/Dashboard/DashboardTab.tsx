@@ -1,4 +1,5 @@
 import React from 'react'
+import CreatorPage from './CreatorPage';
 import EarningsTab from './EarningsTab'
 import ProfilePage from './ProfilePage'
 
@@ -58,7 +59,7 @@ export default function DashboardTab(param: IParams) : JSX.Element {
           <EarningsTab donationsReceived={ param.donationsReceived} supporters={param.supporters} />
       </div>
       <div className="tab-pane fade" id="tabs-profile" role="tabpanel" aria-labelledby="tabs-profile-tab">
-          <ProfilePage id={param.id} userbio={ param.userbio} username={param.username} ipfsHash={param.ipfsHash} walletAddress={param.walletAddress} />
+          <CreatorPage id={param.id} userbio={ param.userbio} username={param.username} ipfsHash={param.ipfsHash} walletAddress={param.walletAddress} />
       </div>
     </div>
     </div>

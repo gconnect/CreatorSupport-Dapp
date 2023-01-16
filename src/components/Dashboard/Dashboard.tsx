@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState} from 'react'
 import CustomButton from '../CustomButton'
 import DashboardTab from './DashboardTab'
 import WithdrawModal from '../Modal/WIthdrawModal'
@@ -7,12 +7,12 @@ import { useQuery } from '@tanstack/react-query'
 import ShareButton from '../ShareButton'
 import { useWeb3React } from '@web3-react/core'
 import { useNavigate } from "react-router-dom"
+import { removeSpace } from '../../utils/truncate'
 
 export default function Dashboard(): JSX.Element{
   const { account } = useWeb3React()
-  const navigate = useNavigate()
 
-  console.log('acc ', account)
+  const navigate = useNavigate()
   
    const {isLoading, isError, data  } = useQuery({
     queryKey: ['creator'],
@@ -26,15 +26,11 @@ export default function Dashboard(): JSX.Element{
   if (isLoading) {
      return <div className='text-center p-60 text-2xl'>Loading data ...</div>
   }
-  if (isError) {
-    return <div className='text-center p-60 text-2xl'>{isError} 🤦‍♂️  Please hold on this may take a while...</div>
-  }
-  // if (account === undefined) {
-  //   return <div></div>;
-  // }
+
   return (
     <div>
-    <div className='bg-gray-800 p-36 m-24 rounded-md'>
+      {data !== undefined ? 
+        <div className='bg-gray-800 p-36 m-24 rounded-md'>
       <div className='flex justify-between'>
         <div className='flex'>          
           <img className='rounded-full' src={data === undefined ? undefined : `https://ipfs.io/ipfs/${data.ipfsHash}`} width="100px" alt="profile-pix" />
@@ -44,13 +40,13 @@ export default function Dashboard(): JSX.Element{
           </div>
         </div>
         <div>
-          <ShareButton/>          
+          <ShareButton username={data.username}/>          
           <CustomButton text='Withdraw' myStyle='bg-amber-500 mt-4' targetValue='#withdrawModal' toggleValue='modal'/>
-          <WithdrawModal id={data.id} walletAddress={data.walletAddress} />
+          <WithdrawModal id={data.id -1} walletAddress={data.walletAddress} />
         </div>
       </div>
         <DashboardTab
-          id={data.id}
+          id={data.id -1}
           username={data.username}
           userbio={data.userbio}
           walletAddress={data.walletAddress}
@@ -59,6 +55,8 @@ export default function Dashboard(): JSX.Element{
           supporters={data.supporters}       
         />
     </div>
+      :<div className='text-center p-60 text-2xl'>Please hold on this may take a  while ...</div>}
+    
     </div>   
   )
 }

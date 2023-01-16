@@ -7,9 +7,9 @@ import { Web3ReactProvider } from "@web3-react/core"
 import Layout from './components/Layout';
 import Content from './components/Content';
 import Dashboard from './components/Dashboard/Dashboard';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { useWeb3React } from '@web3-react/core';
+import { Route, Routes } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import ProfilePage from './components/Dashboard/ProfilePage';
 
 const getLibrary = (provider: ethers.providers.ExternalProvider) => {
   return new ethers.providers.Web3Provider(provider)
@@ -25,6 +25,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Content />} />
             <Route path="dashboard" element={<Dashboard />} />
+            <Route path={"/:username"} element={<ProfilePage />} />
         </Routes>
         </Layout>
       </QueryClientProvider>

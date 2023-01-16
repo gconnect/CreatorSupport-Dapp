@@ -5,6 +5,7 @@ import FormInput from "../FormInput";
 import { createCreator } from "../../utils/interact";
 import { pinFileToPinata } from "../../pinata/PinFile";
 import { resolveDomainUsingAPI, reverseResolution } from "../../unstoppable/unstoppable_resolution"
+import { removeSpace } from "../../utils/truncate";
 
 export default function CreatorModal(): JSX.Element {
   const { activate, account, active } = useWeb3React();
@@ -14,7 +15,7 @@ export default function CreatorModal(): JSX.Element {
   const [walletAddress, setWalletAddress] = useState<string>("")
   const [profilePix, setProfilePix] = useState<string | File | number | readonly string[] | undefined>(undefined)
   const [resolveDomain, setResolveDomain] = useState<string | null >("")
-
+  const [errorMessage, setErrorMessage] = useState<string>("")
   const userHandler = (e: React.FormEvent<HTMLInputElement>) => {
     setUsername(e.currentTarget.value)
   }
@@ -37,16 +38,38 @@ export default function CreatorModal(): JSX.Element {
     if (e.target.files != null) {
       setProfilePix(e.target.files[0]); 
       console.log(e.target.files[0])
-    }
+    } 
   }
 
   const createAccount = async () => {
+    if (username === "") {
+      setErrorMessage("Username required!")
+      alert("Username required")
+      return
+    } else {
+      setErrorMessage("")
+    }
+    if (bio === "") {
+      alert("Brief bio required")
+    }
+    if (username.indexOf(' ') >= 0) {
+      // setErrorMessage("Space not allowed here")
+      alert("Space not allowed here")
+      return
+    } 
+    
+    if( document.getElementById("formFile").files.length === 0 ){
+      alert("upload photo")
+      return
+    } 
+
     const pinataHash = await pinFileToPinata(profilePix) 
-    await createCreator(account, username, pinataHash, bio, network)
+    await createCreator(account, removeSpace(username), pinataHash, bio, network)
+    
   }
 
     const domainResolution = async () => {
-    const response = await resolveDomainUsingAPI(account as string)
+    const response = await resolveDomainUsingAPI(account!)
     setResolveDomain(response)
     }
   
@@ -68,7 +91,8 @@ export default function CreatorModal(): JSX.Element {
             </div>
             <div className="modal-body relative p-4">
               <div className="flex justify-center flex flex-col">
-                <FormInput placeholder="Username" value={username} onChange={userHandler}  type="text"/>
+                <FormInput placeholder="Enter username without space" value={username} onChange={userHandler} type="text" />
+                <label className="text-red-500">{errorMessage}</label>
                 <textarea
                   className="
                     form-control
@@ -119,7 +143,7 @@ export default function CreatorModal(): JSX.Element {
                 <label className="form-label inline-block mb-2 text-gray-700 my-2"> Wallet Address </label>
                 <FormInput placeholder="Wallet Address" value={resolveDomain === null || undefined || " "  ? account as string : resolveDomain } disabled={true} type="text" onChange={walletHandler} />
                   <label htmlFor="formFile" className="form-label inline-block mb-2 text-gray-700">Upload your profile picture</label>
-                  <input className="form-control
+                  <input className="form-control 
                   block
                   w-full
                   my-2

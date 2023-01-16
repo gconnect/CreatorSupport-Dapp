@@ -6,7 +6,7 @@ import { ethers } from "ethers";
 
 const alchemyUrl = `https://polygon-mumbai.g.alchemy.com/v2/${process.env.REACT_APP_ALCHEMY_MUMBAI_API_KEY}`;
 const web3 = createAlchemyWeb3(alchemyUrl);
-const contractAddress = "0x8A5E7B981F418e4db93a7aC2421CBF75502FfA67";
+const contractAddress = "0x6AaBa2C0Fa5079D5A3b72EC17266fc36d145E9e7";
 
  export const donationContract = new web3.eth.Contract(
   contractABI.abi as AbiItem[],

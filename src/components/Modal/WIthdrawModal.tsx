@@ -25,7 +25,8 @@ export default function WithdrawModal(param: IParams): JSX.Element {
   const withdrawTip = async () => {
     await creatorWithdrawTip(account, param.id, ethers.utils.parseUnits(amount, "ether"))
   }
-
+  console.log("withdraw id", param.id)
+  
   return (
     <div>
       <div className="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto" id="withdrawModal" tabIndex={-1} aria-labelledby="exampleModalCenterTitle" aria-modal="true" role="dialog">

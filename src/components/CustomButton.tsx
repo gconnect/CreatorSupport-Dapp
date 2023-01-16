@@ -16,7 +16,7 @@ export default function CustomButton(params: IButton) : JSX.Element {
       text-white p-2 mr-2 rounded-md align-center`}
         data-bs-toggle={params.toggleValue}
         data-bs-target={params.targetValue}
-        data-bs-dismiss="modal"
+        // data-bs-dismiss="modal"
         onClick={params.action}>
       {params.text}
       </button>

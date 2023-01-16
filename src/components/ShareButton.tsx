@@ -6,7 +6,10 @@ import React from 'react'
   TwitterIcon,
 } from "react-share";
 
-export default function ShareButton() {
+interface IParams{
+  username: string;
+}
+export default function ShareButton(param: IParams) {
   return (
     <div className="flex justify-center">
   <div>
@@ -81,14 +84,14 @@ export default function ShareButton() {
           > 
             <div className='w-full'>
               <div className='flex dropdown-item'>
-                <FacebookShareButton url="https://www.dsupport.vercel.app/gconnect" title="I’m on @dsupportDapp. If you like my work, you can send me some tip and share your thoughts 🎉☕" hashtag=''>
+                <FacebookShareButton url={`https://www.dsupport.vercel.app/${param.username}`}title="I’m on @dsupportDapp. If you like my work, you can send me some tip and share your thoughts 🎉☕" hashtag=''>
                     <FacebookIcon size={40} round={true} />
                 </FacebookShareButton>
                 <p className='text-black'>Facebook</p>
               </div>
 
                 <div className='flex dropdown-item'>
-                <TwitterShareButton url="https://www.dsupport.vercel.app/gconnect" title="I’m on @dsupportDapp. If you like my work, you can send me some tip and share your thoughts 🎉☕">
+                <TwitterShareButton url={`https://www.dsupport.vercel.app/${param.username}`} title="I’m on @dsupportDapp. If you like my work, you can send me some tip and share your thoughts 🎉☕">
                     <TwitterIcon size={40} round={true} />
                 </TwitterShareButton>
                 <p className='text-black'>Twitter</p>

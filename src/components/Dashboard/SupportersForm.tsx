@@ -34,7 +34,7 @@ export default function SupportersForm(param: IParams) {
   }
   
   return (
-    <div>
+    <div className='px-48'>
       <div className="flex flex-col">
                 <FormInput placeholder="Amount" value={amount} onChange={amountHandler} type="number" />
                 <textarea
@@ -65,7 +65,7 @@ export default function SupportersForm(param: IParams) {
                 </textarea>
                 <FormInput placeholder="Wallet address" value={param.walletAddress} onChange={walletHandler} type="text" disabled={true} />                  
               </div>
-              <CustomButton text="Support" myStyle="bg-amber-500 w-full" toggleValue={account === undefined ? 'modal' : ""} targetValue= {account === undefined ? "#exampleModalCenter" : ""} action={() => { sendSupport() }}/>
+              <CustomButton text="Support" myStyle="bg-amber-500 w-full p-4" toggleValue={account === undefined ? 'modal' : ""} targetValue= {account === undefined ? "#exampleModalCenter" : ""} action={() => { sendSupport() }}/>
     </div>
   )
 }
