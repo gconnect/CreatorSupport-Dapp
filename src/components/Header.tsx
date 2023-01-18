@@ -46,8 +46,6 @@ export default function Header(): JSX.Element{
     domainResolution()
     connectWalletOnPageLoad()
   }, [])
-  console.log(account)
-
 
    const { data  } = useQuery({
     queryKey: ['creator'],
@@ -65,7 +63,7 @@ export default function Header(): JSX.Element{
           {active ?
             <div className='flex'>
               <CustomButton myStyle='bg-black border-2 border-amber-500 text-amber-500' text={ `Connected to ${ resolveDomain === null || undefined || " " ? truncate(account) : resolveDomain}` } />
-              <CustomButton myStyle='bg-amber-500' text="Disconnect" action={disconnect} />
+              <CustomButton myStyle='bg-amber-500' text="Disconnect" action={() => disconnect()} />
               {data !== undefined ?
                 <CustomButton myStyle='bg-amber-500' text='Dashboard' action={() => window.open('dashboard')} /> :
                 null

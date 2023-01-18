@@ -1,7 +1,5 @@
 import React, { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
 import CreatorSection from './CreatorSection'
-import { useWeb3React } from '@web3-react/core'
 import FeaturedCreators from './FeaturedCreators'
 import Hero from './Hero'
 import PartnerSection from './PartnerSection'
