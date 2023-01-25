@@ -16,6 +16,11 @@ export default function CreatorModal(): JSX.Element {
   const [profilePix, setProfilePix] = useState<string | File | number | readonly string[] | undefined>(undefined)
   const [resolveDomain, setResolveDomain] = useState<string | null >("")
   const [errorMessage, setErrorMessage] = useState<string>("")
+  const [bioError, setBioError] = useState<string>("")
+  const [photoError, setPhotoError] = useState<string>("")
+  const [networkError, setNetworkError] = useState<string>("")
+  const [pinStatus, setPinStatus] = useState<string>("")
+
   const userHandler = (e: React.FormEvent<HTMLInputElement>) => {
     setUsername(e.currentTarget.value)
   }
@@ -27,7 +32,7 @@ export default function CreatorModal(): JSX.Element {
 
   const networkHandler = (e: ChangeEvent<HTMLSelectElement>) => {
     setNetwork(e.target.value)
-
+    console.log(e.target.value)
   }
 
   const walletHandler = (e: React.FormEvent<HTMLInputElement>) => {
@@ -44,26 +49,32 @@ export default function CreatorModal(): JSX.Element {
   const createAccount = async () => {
     if (username === "") {
       setErrorMessage("Username required!")
-      alert("Username required")
       return
     } else {
       setErrorMessage("")
     }
     if (bio === "") {
-      alert("Brief bio required")
+      setBioError("Brief bio required")
     }
     if (username.indexOf(' ') >= 0) {
       // setErrorMessage("Space not allowed here")
-      alert("Space not allowed here")
+      setErrorMessage("Space not allowed here")
       return
     } 
     
     if( document.getElementById("formFile").files.length === 0 ){
-      alert("upload photo")
+      setPhotoError("Please upload your profile photo")   
       return
     } 
 
-    const pinataHash = await pinFileToPinata(profilePix) 
+    if (network === "Select Network") {
+      setNetworkError("Please select a network")
+      console.log("select a network")
+      return
+    }
+
+    const pinataHash = await pinFileToPinata(profilePix)
+    setPinStatus(pinStatus)
     await createCreator(account, removeSpace(username), pinataHash, bio, network)
     
   }
@@ -75,7 +86,8 @@ export default function CreatorModal(): JSX.Element {
   
   useEffect(() => {
       domainResolution()
-    })
+  })
+
   return (
     <div>
       <div className="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto" id="creatorModal" tabIndex={-1} aria-labelledby="exampleModalCenterTitle" aria-modal="true" role="dialog">
@@ -92,7 +104,7 @@ export default function CreatorModal(): JSX.Element {
             <div className="modal-body relative p-4">
               <div className="flex justify-center flex flex-col">
                 <FormInput placeholder="Enter username without space" value={username} onChange={userHandler} type="text" />
-                <label className="text-red-500">{errorMessage}</label>
+                <small className="text-red-500 mt-0 mb-4">{errorMessage}</small>
                 <textarea
                   className="
                     form-control
@@ -119,6 +131,7 @@ export default function CreatorModal(): JSX.Element {
                   onChange={bioHandler}
                 >                  
                 </textarea>
+                <small className="text-red-500 mt-0 mb-4">{bioError}</small>
                 <label className="form-label inline-block mb-2 text-gray-700 my-2">Where would you like to receive your payment?</label>
                <select className="form-select appearance-none
                       block
@@ -140,13 +153,13 @@ export default function CreatorModal(): JSX.Element {
                         <option disabled value="2">Celo</option>
                         <option disabled value="3">Algorand</option>
                 </select>
+                <small className="text-red-500 mt-0 mb-4">{networkError}</small>
                 <label className="form-label inline-block mb-2 text-gray-700 my-2"> Wallet Address </label>
                 <FormInput placeholder="Wallet Address" value={resolveDomain === null || undefined || " "  ? account as string : resolveDomain } disabled={true} type="text" onChange={walletHandler} />
-                  <label htmlFor="formFile" className="form-label inline-block mb-2 text-gray-700">Upload your profile picture</label>
+                  <label htmlFor="formFile" className="form-label inline-block mb-2 text-gray-700 my-2">Upload your profile picture</label>
                   <input className="form-control 
                   block
                   w-full
-                  my-2
                   px-3
                   py-1.5
                   text-base
@@ -160,9 +173,11 @@ export default function CreatorModal(): JSX.Element {
                   m-0
                   focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" type="file" id="formFile" onChange={profileHandler} />
               </div>
+              <small className="text-red-500 mt-0 mb-8">{photoError}</small>
+              <p className="text-black">{ pinStatus}</p>
               <CustomButton
                 text={"Create Account"}
-                myStyle="bg-amber-500 w-full"
+                myStyle="bg-amber-500 w-full mt-4"
                 action={() => { createAccount() }} />           
             </div>
           </div>

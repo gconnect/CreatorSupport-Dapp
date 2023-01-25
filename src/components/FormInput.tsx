@@ -11,9 +11,8 @@ interface IFormInput {
 export default function FormInput(params: IFormInput) : JSX.Element {
   return (
       <input
-        type={params.type}
+      type={params.type}
         className="
-          my-2
           form-control
           block
           w-full

@@ -2,7 +2,7 @@ import axios from "axios"
 const FormData = require("form-data");
 const JWT = `Bearer ${process.env.REACT_APP_PINATA_JWT}`
 
-export const pinFileToPinata = async (selectedFile : string | File | number | readonly string[] | undefined ) => {
+export const pinFileToPinata = async (selectedFile : string | File | number | readonly string[] | undefined) => {
   const formData = new FormData();
     
     formData.append('file', selectedFile)
@@ -16,7 +16,6 @@ export const pinFileToPinata = async (selectedFile : string | File | number | re
       cidVersion: 0,
     })
     formData.append('pinataOptions', options);
-
     try{
       const res = await axios.post("https://api.pinata.cloud/pinning/pinFileToIPFS", formData, {
         maxBodyLength: Infinity,
