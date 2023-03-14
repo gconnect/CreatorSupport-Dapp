@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import ConnectModal from './Modal/ConnectModal'
 import CustomButton from './CustomButton'
 import { useWeb3React } from '@web3-react/core'
 import { Injected } from '../utils/Connectors'
 import { getCreators } from '../utils/interact'
-import { useQueries } from '@tanstack/react-query'
+import {useQuery, useQueries } from '@tanstack/react-query'
 import { resolveDomainUsingAPI, reverseResolution } from "../unstoppable/unstoppable_resolution"
 import { truncate } from '../utils/truncate'
 
@@ -44,35 +44,41 @@ export default function Header(): JSX.Element{
         }
       }
     }
-    domainResolution()
+    // domainResolution()
     connectWalletOnPageLoad()
   }, [])
 
-  //  const { data  } = useQuery({
-  //   queryKey: ['creator'],
-  //   queryFn: async () => {
-  //     const creators = await getCreators()
-  //     return creators.find(item => item.walletAddress === account)
-  //   }
-  //  })
+  const domain = useCallback(async () => {
+    const response = await resolveDomainUsingAPI(account as string)
+    setResolveDomain(() => response);
+  }, [account]);
+  domain()
 
-  const [creatorQuery, domainQuery] = useQueries({
-    queries: [
-      {
-        queryKey: ['posts'],
-        queryFn: async () => {
-          const creators = await getCreators()
-          return creators.find(item => item.walletAddress === account)
-        },
-      },
+   const { data  } = useQuery({
+    queryKey: ['creator'],
+    queryFn: async () => {
+      const creators = await getCreators()
+      return creators.find(item => item.walletAddress === account)
+    }
+   })
 
-      {
-        queryKey: ['users'],
-        queryFn: async () =>
-          await resolveDomainUsingAPI(account as string),
-      },
-    ],
-  });
+  // const [creatorQuery, domainQuery] = useQueries({
+  //   queries: [
+  //     {
+  //       queryKey: ['creatorAccount'],
+  //       queryFn: async () => {
+  //         const creators = await getCreators()
+  //         return creators.find(item => item.walletAddress === account)
+  //       },
+  //     },
+
+  //     {
+  //       queryKey: ['domain'],
+  //       queryFn: async () =>
+  //         await resolveDomainUsingAPI(account as string),
+  //     },
+  //   ],
+  // });
   
   return (
       <header>
@@ -81,9 +87,9 @@ export default function Header(): JSX.Element{
         <div>
           {active ?
             <div className='flex'>
-              <CustomButton myStyle='bg-black border-2 border-amber-500 text-amber-500' text={ `Connected to ${ !domainQuery.data ? truncate(account) : domainQuery.data}` } />
+              <CustomButton myStyle='bg-black border-2 border-amber-500 text-amber-500' text={ `Connected to ${ !resolveDomain ? truncate(account) : resolveDomain}` } />
               <CustomButton myStyle='bg-amber-500' text="Disconnect" action={() => disconnect()} />
-              {creatorQuery.data ?
+              {data ?
                 <CustomButton myStyle='bg-amber-500' text='Dashboard' action={() => window.open('dashboard')} /> :
                 null
                 }

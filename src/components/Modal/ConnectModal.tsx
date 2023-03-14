@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import UnstoppableIcon from '../../images/wallet/unstoppable-icon.png'
 import MetaMaskIcon from '../../images/wallet/metamask-icon.png'
 import CoinbaseWalletIcon from '../../images/wallet/coinbase-icon.svg'
@@ -8,18 +8,15 @@ import ButtonWithIcon from "../ButtonWithIcon";
 import { useWeb3React } from '@web3-react/core'
 import { CoinbaseWallet, WalletConnect, Injected , uauth} from '../../utils/Connectors';
 import { switchNetwork } from "../../utils/SwitchNetwork";
+import { Web3ReactProvider } from "@web3-react/core"
+import { ethers } from "ethers";
 
 export default function ConnectModal(): JSX.Element {
-  const { activate, library } = useWeb3React();
-
+  const { activate, library, chainId } = useWeb3React();
 
   const connect = async () => {
     try {
-
-                  switchNetwork(library)
-
       await activate(Injected)
-
       localStorage.setItem("isWalletConnected", "true")
       window.location.reload()
     } catch (err) {
@@ -45,7 +42,8 @@ export default function ConnectModal(): JSX.Element {
     } catch (err) {
       console.log(err)
     }
-  }
+    }
+
 
   return (
     <div>

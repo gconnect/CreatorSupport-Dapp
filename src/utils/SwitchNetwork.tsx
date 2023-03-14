@@ -1,13 +1,14 @@
 import { CoinbaseWallet, WalletConnect, Injected , uauth} from './Connectors';
 
 // example of switching or adding network with Mumbai Testnet
-export const switchNetwork = async(library : any) => {
+export const switchNetwork = async (library: any) => {  
 
    try {
-     await library.provider.request({
+    const response =  await library.provider.request({
        method: "wallet_switchEthereumChain",
        params: [{ chainId: "0x13881" }],
-     });
+    });
+     console.log("response", response)
    } catch (switchError) {
      // 4902 error code indicates the chain is missing on the wallet
      if (switchError.code === 4902) {
