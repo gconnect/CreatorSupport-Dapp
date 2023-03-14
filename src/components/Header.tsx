@@ -5,7 +5,7 @@ import CustomButton from './CustomButton'
 import { useWeb3React } from '@web3-react/core'
 import { Injected } from '../utils/Connectors'
 import { getCreators } from '../utils/interact'
-import { useQuery } from '@tanstack/react-query'
+import { useQueries } from '@tanstack/react-query'
 import { resolveDomainUsingAPI, reverseResolution } from "../unstoppable/unstoppable_resolution"
 import { truncate } from '../utils/truncate'
 
@@ -26,7 +26,7 @@ export default function Header(): JSX.Element{
     }
   }
   const domainResolution = async () => {
-    const response = await resolveDomainUsingAPI(account!)
+    const response = await resolveDomainUsingAPI(account as string)
     console.log("domain ",response)
     setResolveDomain(response)
   }
@@ -48,13 +48,31 @@ export default function Header(): JSX.Element{
     connectWalletOnPageLoad()
   }, [])
 
-   const { data  } = useQuery({
-    queryKey: ['creator'],
-    queryFn: async () => {
-      const creators = await getCreators()
-      return creators.find(item => item.walletAddress === account)
-    }
-   })
+  //  const { data  } = useQuery({
+  //   queryKey: ['creator'],
+  //   queryFn: async () => {
+  //     const creators = await getCreators()
+  //     return creators.find(item => item.walletAddress === account)
+  //   }
+  //  })
+
+  const [creatorQuery, domainQuery] = useQueries({
+    queries: [
+      {
+        queryKey: ['posts'],
+        queryFn: async () => {
+          const creators = await getCreators()
+          return creators.find(item => item.walletAddress === account)
+        },
+      },
+
+      {
+        queryKey: ['users'],
+        queryFn: async () =>
+          await resolveDomainUsingAPI(account as string),
+      },
+    ],
+  });
   
   return (
       <header>
@@ -63,9 +81,9 @@ export default function Header(): JSX.Element{
         <div>
           {active ?
             <div className='flex'>
-              <CustomButton myStyle='bg-black border-2 border-amber-500 text-amber-500' text={ `Connected to ${ !resolveDomain ? truncate(account) : resolveDomain}` } />
+              <CustomButton myStyle='bg-black border-2 border-amber-500 text-amber-500' text={ `Connected to ${ !domainQuery.data ? truncate(account) : domainQuery.data}` } />
               <CustomButton myStyle='bg-amber-500' text="Disconnect" action={() => disconnect()} />
-              {data !== undefined ?
+              {creatorQuery.data ?
                 <CustomButton myStyle='bg-amber-500' text='Dashboard' action={() => window.open('dashboard')} /> :
                 null
                 }
