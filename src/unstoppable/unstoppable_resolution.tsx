@@ -42,9 +42,9 @@ export async function resolveDomainUsingAPI(domain : string){
         'Content-Type': 'application/json',
       }
     })
-    // console.log(response.data.meta.domain)
-    console.log("domain api" ,response.data.meta.domain)
-    return response.data.meta.owner
+    // console.log(response.data.meta.owner)
+    console.log("domain name" ,response.data.meta.domain)
+    return response.data.meta.domain
   }catch(err){
     console.log(err)
   }

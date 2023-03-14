@@ -26,7 +26,8 @@ export default function FormInput(params: IFormInput) : JSX.Element {
           rounded
           transition
           ease-in-out
-          m-0
+          mx-0
+          my-2
           focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none
         "
         disabled= {params.disabled}

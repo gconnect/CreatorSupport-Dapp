@@ -99,7 +99,7 @@ export default function SupporterModal(params: IParams) {
                         onChange={commentHandler}
                       >                  
                       </textarea>
-                      <FormInput placeholder="Wallet address" value={ resolveDomain === null || undefined || " "  ? params.walletAddress :  resolveDomain} onChange={walletHandler} type="text" disabled={true} />                         
+                      <FormInput placeholder="Wallet address" value={ !resolveDomain ? params.walletAddress :  resolveDomain} onChange={walletHandler} type="text" disabled={true} />                         
                     </div>
                     <CustomButton text="Support" myStyle="bg-amber-500 w-full p-4" action={() =>{sendSupport()}}/>
               </div>

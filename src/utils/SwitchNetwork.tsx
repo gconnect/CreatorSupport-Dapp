@@ -1,3 +1,4 @@
+import { CoinbaseWallet, WalletConnect, Injected , uauth} from './Connectors';
 
 // example of switching or adding network with Mumbai Testnet
 export const switchNetwork = async(library : any) => {

@@ -7,15 +7,19 @@ import WalletConnectIcon from '../../images/wallet/wallet-connect-icon.png'
 import ButtonWithIcon from "../ButtonWithIcon";
 import { useWeb3React } from '@web3-react/core'
 import { CoinbaseWallet, WalletConnect, Injected , uauth} from '../../utils/Connectors';
-
+import { switchNetwork } from "../../utils/SwitchNetwork";
 
 export default function ConnectModal(): JSX.Element {
-  const { activate } = useWeb3React();
+  const { activate, library } = useWeb3React();
 
 
   const connect = async () => {
     try {
+
+                  switchNetwork(library)
+
       await activate(Injected)
+
       localStorage.setItem("isWalletConnected", "true")
       window.location.reload()
     } catch (err) {

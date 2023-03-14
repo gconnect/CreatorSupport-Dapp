@@ -155,7 +155,7 @@ export default function CreatorModal(): JSX.Element {
                 </select>
                 <small className="text-red-500 mt-0 mb-4">{networkError}</small>
                 <label className="form-label inline-block mb-2 text-gray-700 my-2"> Wallet Address </label>
-                <FormInput placeholder="Wallet Address" value={resolveDomain === null || undefined || " "  ? account as string : resolveDomain } disabled={true} type="text" onChange={walletHandler} />
+                <FormInput placeholder="Wallet Address" value={!resolveDomain  ? account as string : resolveDomain } disabled={true} type="text" onChange={walletHandler} />
                   <label htmlFor="formFile" className="form-label inline-block mb-2 text-gray-700 my-2">Upload your profile picture</label>
                   <input className="form-control 
                   block

@@ -6,7 +6,7 @@ import { useWeb3React } from '@web3-react/core'
 import { Injected } from '../utils/Connectors'
 import { getCreators } from '../utils/interact'
 import { useQuery } from '@tanstack/react-query'
-import { resolveDomainUsingAPI } from "../unstoppable/unstoppable_resolution"
+import { resolveDomainUsingAPI, reverseResolution } from "../unstoppable/unstoppable_resolution"
 import { truncate } from '../utils/truncate'
 
 export default function Header(): JSX.Element{
@@ -26,7 +26,8 @@ export default function Header(): JSX.Element{
     }
   }
   const domainResolution = async () => {
-    const response = await resolveDomainUsingAPI(account as string)
+    const response = await reverseResolution(account!)
+    console.log("domain ",response)
     setResolveDomain(response)
   }
 
@@ -62,7 +63,7 @@ export default function Header(): JSX.Element{
         <div>
           {active ?
             <div className='flex'>
-              <CustomButton myStyle='bg-black border-2 border-amber-500 text-amber-500' text={ `Connected to ${ resolveDomain === null || undefined || " " ? truncate(account) : resolveDomain}` } />
+              <CustomButton myStyle='bg-black border-2 border-amber-500 text-amber-500' text={ `Connected to ${ !resolveDomain ? truncate(account) : resolveDomain}` } />
               <CustomButton myStyle='bg-amber-500' text="Disconnect" action={() => disconnect()} />
               {data !== undefined ?
                 <CustomButton myStyle='bg-amber-500' text='Dashboard' action={() => window.open('dashboard')} /> :
