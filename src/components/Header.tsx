@@ -26,7 +26,7 @@ export default function Header(): JSX.Element{
     }
   }
   const domainResolution = async () => {
-    const response = await reverseResolution(account!)
+    const response = await resolveDomainUsingAPI(account!)
     console.log("domain ",response)
     setResolveDomain(response)
   }
